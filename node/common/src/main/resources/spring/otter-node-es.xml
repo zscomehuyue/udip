@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+     http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+     http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
+
+    <bean id="defaultEsService" class="com.alibaba.otter.common.push.index.es.EsIndexServiceImpl"
+          init-method="buildClient">
+        <property name="clusterName" value="${es.cluster.name:es}"/>
+        <property name="clusterNodes" value="${es.cluster.nodes:127.0.0.1:9300}"/>
+        <property name="mappingService" ref="mappingService"/>
+    </bean>
+
+    <bean id="mappingService" class="com.alibaba.otter.common.push.index.es.MappingServiceImpl"/>
+
+    <aop:config>
+        <aop:pointcut id="retry" expression="execution(public * com.alibaba.otter.common.push.index..*.*(..))"/>
+        <aop:advisor pointcut-ref="retry" advice-ref="retryAdvice" order="-1"/>
+    </aop:config>
+    <bean id="retryAdvice" class="org.springframework.retry.interceptor.RetryOperationsInterceptor"/>
+
+</beans>

@@ -1,0 +1,42 @@
+curl -H 'Content-Type:application/json; charset=utf-8'     -XPOST   "http://192.168.13.188:9200/tutor/udip/_mapping?pretty"  -d   '{
+"udip": {
+"properties": {
+"esDate": {
+"type": "keyword"
+},
+"esDateTime": {
+"type": "long"
+},
+"tutor_RealName": {
+"type": "text",
+"fields": {
+"keyword": {
+"type": "keyword",
+"ignore_above": 256
+}
+}
+},
+"tutor_cityId": {
+"type": "keyword"
+},
+"tutor_id": {
+"type": "keyword"
+},
+"tutor_imgUrl": {
+"type": "keyword"
+},
+"tutor_sex": {
+"type": "long"
+},
+"tutor_sysName": {
+"type": "text",
+"fields": {
+"keyword": {
+"type": "keyword",
+"ignore_above": 256
+}
+}
+}
+}
+}
+}'

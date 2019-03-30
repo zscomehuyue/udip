@@ -1,0 +1,33 @@
+curl -H 'Content-Type:application/json; charset=utf-8'     -XPOST   "http://192.168.13.188:9200/clase_v1/udip/_mapping?pretty"  -d   '{
+      "udip" : {
+        "properties" : {
+          "clase_cityId" : {
+            "type" : "keyword"
+          },
+          "clase_id" : {
+            "type" : "keyword"
+          },
+          "clase_stagesName" : {
+            "type" : "text",
+            "fields" : {
+              "keyword" : {
+                "type" : "keyword",
+                "ignore_above" : 256
+              }
+            }
+          },
+          "clase_stagesNum" : {
+            "type" : "long"
+          },
+          "clase_updateTime" : {
+            "type" : "date"
+          },
+          "esDate" : {
+            "type" : "keyword"
+          },
+          "esDateTime" : {
+            "type" : "long"
+          }
+        }
+      }
+    }'

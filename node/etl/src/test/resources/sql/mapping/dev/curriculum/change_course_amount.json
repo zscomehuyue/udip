@@ -1,0 +1,80 @@
+curl -H 'Content-Type:application/json; charset=utf-8'     -XPOST   "http://10.200.0.109:9200/change_course_amount/udip/_mapping?pretty"  -d   '{
+  "udip": {
+    "properties": {
+      "changeCourseAmount_changeCourseAmount": {
+        "type": "long"
+      },
+      "changeCourseAmount_cityId": {
+        "type": "keyword"
+      },
+      "changeCourseAmount_classType": {
+        "type": "long"
+      },
+      "changeCourseAmount_createDate": {
+        "type": "date"
+      },
+      "changeCourseAmount_createrId": {
+        "type": "keyword"
+      },
+      "changeCourseAmount_createrName": {
+        "type": "text",
+        "fields": {
+          "keyword": {
+            "type": "keyword",
+            "ignore_above": 256
+          }
+        }
+      },
+      "changeCourseAmount_gradeId": {
+        "type": "keyword"
+      },
+      "changeCourseAmount_gradeName": {
+        "type": "text",
+        "fields": {
+          "keyword": {
+            "type": "keyword",
+            "ignore_above": 256
+          }
+        }
+      },
+      "changeCourseAmount_gradeTypeId": {
+        "type": "keyword"
+      }, "changeCourseAmount_gradeTypeName": {
+        "type": "text",
+        "fields": {
+          "keyword": {
+            "type": "keyword",
+            "ignore_above": 256
+          }
+        }
+      },
+      "changeCourseAmount_id": {
+        "type": "keyword"
+      },
+      "changeCourseAmount_isdeleted": {
+        "type": "long"
+      },
+      "changeCourseAmount_modifierId": {
+        "type": "keyword"
+      },
+      "changeCourseAmount_modifierName": {
+        "type": "text",
+        "fields": {
+          "keyword": {
+            "type": "keyword",
+            "ignore_above": 256
+          }
+        }
+      },
+      "changeCourseAmount_modifyDate": {
+        "type": "date"
+      },
+      "esDate": {
+        "type": "keyword"
+      },
+      "esDateTime": {
+        "type": "long"
+      }
+    }
+  }
+}'

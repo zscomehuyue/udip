@@ -1,0 +1,36 @@
+curl -H 'Content-Type:application/json; charset=utf-8'     -XPOST   "http://10.200.0.109:9200/stu/udip/_mapping?pretty"  -d   '{
+"udip" : {
+"properties": {
+"esDate": {
+"type": "keyword"
+},
+"esDateTime": {
+"type": "long"
+},
+"stu_cityId": {
+"type": "keyword"
+},
+"stu_id": {
+"type": "keyword"
+},
+"stu_modifyDate": {
+"type": "date"
+},
+"stu_loginname": {
+"type": "keyword"
+},
+"stu_name": {
+"type": "text",
+"fields" : {
+"keyword": {
+"type": "keyword",
+"ignore_above" : 256
+}
+}
+},
+"stu_uid": {
+"type": "long"
+}
+}
+}
+}'

@@ -1,0 +1,86 @@
+$control.setTemplate("home:navigation.vm")
+<script type='text/javascript' src='dwr/interface/Hello.js'></script>  
+<script type='text/javascript' src='dwr/engine.js'></script>  
+<script type='text/javascript' src='dwr/util.js'></script>  
+<script type='text/javascript' src='js/dbCheck.js'></script>
+<script language="javascript">
+<!--
+	changeNav("datamedia");
+//-->
+</script>
+#macro (editDataSourceMessage $field)
+    #if (!$field.valid) $field.message #end
+#end
+
+<div class="main">
+  <div class="title"> 
+    <h2>编辑ES数据源</h2>
+  </div>
+  <div class="crumbs"><a href="esDataSourceList.htm">ES数据源配置</a>&nbsp;&nbsp;>&nbsp;&nbsp;<a href="esEditDataSource.htm?dataMediaSourceId=$source.id">编辑ES数据源</a></div>
+ 
+ <form name="esEditSourceForm" method="post" enctype="multipart/form-data">
+ $csrfToken.hiddenField
+	<input type="hidden" name="action" value="es_data_media_source_action"/>
+	<input type="hidden" name="event_submit_do_edit" value="1" />
+	<input type="hidden" id="pageIndex" name="pageIndex" value="$!pageIndex"/>
+	<input type="hidden" id="searchKey" name="searchKey" value="$!searchKey"/>
+ <div class="setting_box">
+	#set ($dataMediaSourceInfo = $form.esDataMediaSourceInfo.defaultInstance)
+	<input type="hidden" name="$dataMediaSourceInfo.id.key" value="$source.id" />
+    <input type="hidden" name="dataMediaSourceId" value="$source.id" />
+	<table cellpadding="0" cellspacing="0" class="setting_otter">
+        <span class="red">#editDataSourceMessage ($dataMediaSourceInfo.formEsDataMediaSourceError)</span>
+      <tr> 
+        <th width="300">ES数据源名字：</th>
+        <td width="329">
+			<input name="$dataMediaSourceInfo.name.key" type="text" value="$source.name" class="setting_input"/><span class="red">*</span>
+			<br />
+			<span class="red">#editDataSourceMessage ($dataMediaSourceInfo.name)</span>
+		</td>
+      </tr>
+      
+      <tr> 
+        <th>类型：</th>
+        <td>
+            <select id="sourceType" name="$dataMediaSourceInfo.type.key">
+				<option value="ES" #if($source.type.isMysql()) selected="selected" #end>ES</option>
+			</select><span class="red">*</span>
+        </td>
+	  </tr>
+	  <tr>
+        <th>地址：</th>
+        <td>
+			<textarea id="sourceUrl" name="$dataMediaSourceInfo.clusterNodes.key" class="service" cols="45" rows="5">$source.clusterNodes</textarea><span class="red">*</span>
+			<br />
+			<span class="red">#editDataSourceMessage ($dataMediaSourceInfo.clusterNodes)</span>
+		</td>
+      </tr>
+	  #**
+	   <tr> 
+        <th>StorePath：</th>
+        <td>
+			<input id="sourceStorePath" name="$dataMediaSourceGroup.storePath.key" value="$!source.storePath" type="text" class="setting_input"/><span class="red">Napoli</span>
+			<br />
+			<span class="red">#editDataSourceMessage ($dataMediaSourceGroup.storePath)</span>
+		</td>
+      </tr>
+	  *#
+
+##	  <tr>
+	##        <th><input type='button' value='验证连接数据源' onclick='check();' /></th>
+	##        <td>
+	##			<span class="red" id="result"></span>
+	##		</td>
+	##      </tr>
+	  <tr> 
+        <th>地址示例说明</th>
+        <td>
+            格式如 10.20.10.20:8080;（必须以分号结束，可添多个）
+		</td> 
+      </tr>
+      
+    </table>
+ </div>
+  <div class="btn"><a href="javascript:document.esEditSourceForm.submit();">保存</a></div>
+ </form>
+</div>

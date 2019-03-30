@@ -1,0 +1,57 @@
+curl -H 'Content-Type:application/json; charset=utf-8'     -XPOST   "http://192.168.13.188:9200/rg/udip/_mapping?pretty"  -d   '{
+"udip" : {
+"properties": {
+"esDate": {
+"type": "keyword"
+},
+"esDateTime": {
+"type": "long"
+},
+"rg_cityId": {
+"type": "keyword"
+},
+"rg_classId": {
+"type": "keyword"
+},
+"rg_createDate": {
+"type" : "date"
+},
+"rg_modifyDate": {
+"type": "date"
+},
+"rg_createId": {
+"type": "keyword"
+},
+"rg_id": {
+"type": "keyword"
+},
+"rg_isNewstu": {
+"type": "integer"
+},
+"rg_isTest": {
+"type" : "integer"
+},
+"rg_isdeleted": {
+"type": "integer"
+},
+"rg_ispay": {
+"type": "integer"
+},
+"rg_payDate": {
+"type": "date"
+},
+"rg_payEnddate": {
+"type": "date"
+},
+"rg_sourceClassId": {
+"type" : "keyword"
+},
+"rg_studentId": {
+"type": "keyword"
+},
+"rg_way": {
+"type": "integer"
+}
+}
+}
+}'

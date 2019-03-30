@@ -1,0 +1,87 @@
+$control.setTemplate("home:navigation.vm")
+<script type='text/javascript' src='dwr/interface/Hello.js'></script>  
+<script type='text/javascript' src='dwr/engine.js'></script>  
+<script type='text/javascript' src='dwr/util.js'></script>  
+<script type='text/javascript' src='js/dbCheck.js'></script>
+<script language="javascript">
+<!--
+	changeNav("repair");
+//-->
+
+</script>
+#macro (addDataMediaMessage $field)
+    #if (!$field.valid) $field.message #end
+#end
+
+<div class="main">
+  <div class="title"> 
+    <h2>添加表映射</h2>
+  </div>
+  <div class="crumbs"><a href="checkTableRelList.htm">表映射</a>&nbsp;&nbsp;>&nbsp;&nbsp;<a href="addCheckTableRel.htm">添加表映射</a></div>
+
+ <form id="addCheckTableRelForm" name="addCheckTableRelForm" method="post" enctype="multipart/form-data">
+	$csrfToken.hiddenField
+	<input type="hidden" name="action" value="check_table_rel_action"/>
+	<input type="hidden" name="event_submit_do_edit" value="1" />
+
+ <div class="setting_box">
+	#set ($checkTableRelGroup = $form.checkTableRel.defaultInstance)
+    <input type="hidden" name="$checkTableRelGroup.id.key" value="$!checkTableRelDo.id" />
+     <input type="hidden" name="id" value="$!checkTableRelDo.id" />
+    <table cellpadding="0" cellspacing="0" class="setting_otter">
+		<tr>
+            <span class="red">#addDataMediaMessage ($checkTableRelGroup.formCheckTableRelError)</span>
+        </tr>
+      <tr> 
+        <th width="300">表名称：</th>
+        <td width="329">
+			<input id="tableName" name="$checkTableRelGroup.tableName.key" value="$!checkTableRelDo.tableName" type="text" class="setting_input"/><span class="red">*</span>
+			<br />
+			<span class="red">#addDataMediaMessage ($checkTableRelGroup.tableName)</span>
+		</td>
+      </tr>
+	  <tr> 
+        <th width="300">表对应的时间字段名称：</th>
+        <td width="329">
+			<input id="timeFieldName" name="$checkTableRelGroup.timeFieldName.key" value="$!checkTableRelDo.timeFieldName" type="text" class="setting_input"/>
+			<br />
+			<span class="red">#addDataMediaMessage ($checkTableRelGroup.timeFieldName)</span>
+		</td>
+      </tr>
+		<tr>
+			<th width="300">主键名称：</th>
+			<td width="329">
+				<input id="keyName" name="$checkTableRelGroup.keyName.key" value="$!checkTableRelDo.keyName" type="text" class="setting_input"/><span class="red">*</span>
+				<br />
+				<span class="red">#addDataMediaMessage ($checkTableRelGroup.keyName)</span>
+			</td>
+		</tr>
+        <tr>
+            <th width="300" title="数据检查对比时个性化查询条件。以逻辑连接符开始，如，and xxx=aaa">个性化SQL：</th>
+            <td width="329">
+                <input id="whereSql" name="$checkTableRelGroup.whereSql.key" value="$!checkTableRelDo.whereSql" type="text" class="setting_input"/>
+                <br />
+                <span class="red">#addDataMediaMessage ($checkTableRelGroup.whereSql)</span>
+            </td>
+        </tr>
+        <tr>
+            <th width="300">是否使用：</th>
+            <td width="329">
+                <input type="radio" name="$checkTableRelGroup.isUse.key" value="0" id="RadioGroup2_0" #if($!checkTableRelDo.isUse == 0) checked="checked" #end class="radio"/>是
+                <input type="radio" name="$checkTableRelGroup.isUse.key" value="1" id="RadioGroup2_1" #if($!checkTableRelDo.isUse == 1) checked="checked" #end class="radio"/>否
+                <br />
+                <span class="red">#addDataMediaMessage ($checkTableRelGroup.isUse)</span>
+            </td>
+        </tr>
+
+
+
+    </table>
+	 
+ </div>
+  <div class="btn"><a href="javascript:document.addCheckTableRelForm.submit();">保存</a></div>
+  </form>
+  <br />
+  <br />
+  <br />
+</div>

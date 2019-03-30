@@ -1,0 +1,55 @@
+curl -H 'Content-Type:application/json; charset=utf-8'     -XPOST   "http://10.200.0.109:9200/district/udip/_mapping?pretty"  -d  '{
+
+"udip" : {
+"properties" : {
+"district_cityId" : {
+"type" : "keyword"
+},
+"district_code" : {
+"type" : "keyword"
+},
+"district_createDate" : {
+"type" : "date"
+},
+"district_createrId" : {
+"type" : "keyword"
+},
+"district_deleted" : {
+"type" : "long"
+},
+"district_description" : {
+"type" : "text",
+"fields" : {
+"keyword" : {
+"type" : "keyword",
+"ignore_above" : 256
+}
+}
+},
+"district_id" : {
+"type" : "keyword"
+},
+"district_linkUrl" : {
+"type" : "keyword"
+},
+"district_name" : {
+"type" : "text",
+"fields" : {
+"keyword" : {
+"type" : "keyword",
+"ignore_above" : 256
+}
+}
+},
+"district_order" : {
+"type" : "long"
+},
+"esDate" : {
+"type" : "keyword"
+},
+"esDateTime" : {
+"type" : "long"
+}
+}
+}
+}'

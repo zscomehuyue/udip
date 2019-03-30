@@ -1,0 +1,132 @@
+curl -H 'Content-Type:application/json; charset=utf-8'     -XPOST   "http://10.200.0.109:9200/regist/udip/_mapping?pretty"  -d   '{
+  "udip": {
+    "properties": {
+      "esDate": {
+        "type": "keyword"
+      },
+      "esDateTime": {
+        "type": "long"
+      },
+      "regist_addClassQuantity": {
+        "type": "long"
+      },
+      "regist_biTest": {
+        "type": "long"
+      },
+      "regist_cityId": {
+        "type": "keyword"
+      },
+      "regist_classId": {
+        "type": "keyword"
+      },
+      "regist_classNo": {
+        "type": "long"
+      },
+      "regist_createDate": {
+        "type": "date"
+      },
+      "regist_createId": {
+        "type": "keyword"
+      },
+      "regist_crmStatistic": {
+        "type": "long"
+      },
+      "regist_id": {
+        "type": "keyword"
+      },
+      "regist_isBeiliCourseNo": {
+        "type": "long"
+      },
+      "regist_isNewstu": {
+        "type": "long"
+      },
+      "regist_isReceiptBooks": {
+        "type": "long"
+      },
+      "regist_isReserved": {
+        "type": "long"
+      },
+      "regist_isSendSms": {
+        "type": "long"
+      },
+      "regist_isStatistic": {
+        "type": "long"
+      },
+      "regist_isTest": {
+        "type": "long"
+      },
+      "regist_isbankpay": {
+        "type": "long"
+      },
+      "regist_iscontinue": {
+        "type": "long"
+      },
+      "regist_isdeleted": {
+        "type": "long"
+      },
+      "regist_ispay": {
+        "type": "long"
+      },
+      "regist_listenerCode": {
+        "type": "text",
+        "fields": {
+          "keyword": {
+            "type": "keyword",
+            "ignore_above": 256
+          }
+        }
+      },
+      "regist_listenercardId": {
+        "type": "keyword"
+      },
+      "regist_modifyDate": {
+        "type": "date"
+      },
+      "regist_modifyId": {
+        "type": "keyword"
+      },
+      "regist_passedcount": {
+        "type": "long"
+      },
+      "regist_payDate": {
+        "type": "date"
+      },
+      "regist_payEnddate": {
+        "type": "date"
+      },
+      "regist_remark": {
+        "type": "text",
+        "fields": {
+          "keyword": {
+            "type": "keyword",
+            "ignore_above": 256
+          }
+        }
+      },
+      "regist_reserveSourceClassId": {
+        "type": "keyword"
+      },
+      "regist_reservedChangeClassesDeadline": {
+        "type": "date"
+      },
+      "regist_reservedTimes": {
+        "type": "long"
+      },
+      "regist_seat": {
+        "type": "long"
+      },
+      "regist_sourceClassId": {
+        "type": "keyword"
+      },
+      "regist_studentId": {
+        "type": "keyword"
+      },
+      "regist_version": {
+        "type": "long"
+      },
+      "regist_way": {
+        "type": "long"
+      }
+    }
+  }
+}'

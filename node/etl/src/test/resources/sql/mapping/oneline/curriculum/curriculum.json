@@ -1,0 +1,423 @@
+curl -H 'Content-Type:application/json; charset=utf-8'     -XPOST   "http://192.168.13.188:9200/curriculum/udip/_mapping?pretty"  -d   ' {
+"udip": {
+"properties": {
+"classRegistCount_cityId": {
+"type": "keyword"
+},
+"classRegistCount_classId": {
+"type": "keyword"
+},
+"classRegistCount_id": {
+"type": "keyword"
+},
+"classRegistCount_registCount": {
+"type": "long"
+},
+"classlevel_cityId": {
+"type": "keyword"
+},
+"classlevel_degree": {
+"type": "float"
+},
+"classlevel_id": {
+"type": "keyword"
+},
+"classlevel_name": {
+"type": "text",
+"fields": {
+"keyword": {
+"type": "keyword",
+"ignore_above": 256
+}
+}
+},
+"classlevel_status": {
+"type": "long"
+},
+"classlevel_termIsShowStudent": {
+"type": "long"
+},
+"classtimeType_cityId": {
+"type": "keyword"
+},
+"classtimeType_id": {
+"type": "keyword"
+},
+"classtimeType_name": {
+"type": "text",
+"fields": {
+"keyword": {
+"type": "keyword",
+"ignore_above": 256
+}
+}
+},
+"classtimeType_timeTypeClassify": {
+"type": "text",
+"fields": {
+"keyword": {
+"type": "keyword",
+"ignore_above": 256
+}
+}
+},
+"classtimeType_timeTypeClassifyInt": {
+"type": "text",
+"fields": {
+"keyword": {
+"type": "keyword",
+"ignore_above": 256
+}
+}
+},
+"classtime_id": {
+"type": "keyword"
+},
+"classtime_period": {
+"type": "keyword"
+},
+"classtime_periodType": {
+"type": "long"
+},
+"clazz_areaId": {
+"type": "keyword"
+},
+"clazz_areaName": {
+"type": "text",
+"fields": {
+"keyword": {
+"type": "keyword",
+"ignore_above": 256
+}
+}
+},
+"clazz_bizType": {
+"type": "long"
+},
+"clazz_cityId": {
+"type": "keyword"
+},
+"clazz_classCount": {
+"type": "long"
+},
+"clazz_classType": {
+"type": "long"
+},
+"clazz_classdateId": {
+"type": "keyword"
+},
+"clazz_classdateName": {
+"type": "text",
+"fields": {
+"keyword": {
+"type": "keyword",
+"ignore_above": 256
+}
+}
+},
+"clazz_classroomName": {
+"type": "text",
+"fields": {
+"keyword": {
+"type": "keyword",
+"ignore_above": 256
+}
+}
+},
+"clazz_classtimeIds": {
+"type": "keyword"
+},
+"clazz_classtimeNames": {
+"type": "text",
+"fields": {
+"keyword": {
+"type": "keyword",
+"ignore_above": 256
+}
+}
+},
+"clazz_classtimeTimePeriod": {
+"type": "text",
+"fields": {
+"keyword": {
+"type": "keyword",
+"ignore_above": 256
+}
+}
+},
+"clazz_coursewareSend": {
+"type": "long"
+},
+"clazz_createType": {
+"type": "long"
+},
+"clazz_endDate": {
+"type": "date"
+},
+"clazz_gradeId": {
+"type": "keyword"
+},
+"clazz_gradeName": {
+"type": "text",
+"fields": {
+"keyword": {
+"type": "keyword",
+"ignore_above": 256
+}
+}
+},
+"clazz_gradeTypeId": {
+"type": "keyword"
+},
+"clazz_courseId": {
+"type": "keyword"
+},
+"clazz_gradeTypeName": {
+"type": "text",
+"fields": {
+"keyword": {
+"type": "keyword",
+"ignore_above": 256
+}
+}
+},
+"clazz_id": {
+"type": "keyword"
+},
+"clazz_isClose": {
+"type": "long"
+},
+"clazz_isDelete": {
+"type": "long"
+},
+"clazz_isDisplayFront": {
+"type": "long"
+},
+"clazz_isDisplayTeacher": {
+"type": "long"
+},
+"clazz_isDoubleTeacherLiveClass": {
+"type": "long"
+},
+"clazz_isHidden": {
+"type": "long"
+},
+"clazz_isLiveClass": {
+"type": "long"
+},
+"clazz_isTest": {
+"type": "long"
+},
+"clazz_levelId": {
+"type": "keyword"
+},
+"clazz_levelName": {
+"type": "text",
+"fields": {
+"keyword": {
+"type": "keyword",
+"ignore_above": 256
+}
+}
+},
+"clazz_maxPersons": {
+"type": "long"
+},
+"clazz_name": {
+"type": "text",
+"fields": {
+"keyword": {
+"type": "keyword",
+"ignore_above": 256
+}
+}
+},
+"clazz_passedCount": {
+"type": "long"
+},
+"clazz_price": {
+"type": "float"
+},
+"clazz_servicecenterId": {
+"type": "keyword"
+},
+"clazz_servicecenterName": {
+"type": "text",
+"fields": {
+"keyword": {
+"type": "keyword",
+"ignore_above": 256
+}
+}
+},
+"clazz_startDate": {
+"type": "date"
+},
+"clazz_subjectLongValue": {
+"type": "keyword"
+},
+"clazz_subjectNames": {
+"type": "text",
+"fields": {
+"keyword": {
+"type": "keyword",
+"ignore_above": 256
+}
+}
+},
+"clazz_teacherIds": {
+"type": "text",
+"fields": {
+"keyword": {
+"type": "keyword",
+"ignore_above": 256
+}
+}
+},
+"clazz_teacherNames": {
+"type": "text",
+"fields": {
+"keyword": {
+"type": "keyword",
+"ignore_above": 256
+}
+}
+},
+"clazz_templateId": {
+"type": "keyword"
+},
+"clazz_termId": {
+"type": "keyword"
+},
+"clazz_termName": {
+"type": "text",
+"fields": {
+"keyword": {
+"type": "keyword",
+"ignore_above": 256
+}
+}
+},
+"clazz_tutorId": {
+"type": "keyword"
+},
+"clazz_venueId": {
+"type": "keyword"
+},
+"clazz_venueName": {
+"type": "text",
+"fields": {
+"keyword": {
+"type": "keyword",
+"ignore_above": 256
+}
+}
+},
+"clazz_year": {
+"type": "keyword"
+},
+"curriculum_cancel": {
+"type": "long"
+},
+"curriculum_changeinCourseNum": {
+"type": "long"
+},
+"curriculum_changeoutCourseNum": {
+"type": "long"
+},
+"curriculum_cityId": {
+"type": "keyword"
+},
+"curriculum_classId": {
+"type": "keyword"
+},
+"curriculum_classNum": {
+"type": "long"
+},
+"curriculum_classroomId": {
+"type": "keyword"
+},
+"curriculum_classtimeId": {
+"type": "keyword"
+},
+"curriculum_classtimeTypeId": {
+"type": "keyword"
+},
+"curriculum_id": {
+"type": "keyword"
+},
+"curriculum_isDelete": {
+"type": "long"
+},
+"curriculum_lockStatus": {
+"type": "long"
+},
+"curriculum_modifyTime": {
+"type": "date"
+},
+"curriculum_name": {
+"type": "text",
+"fields": {
+"keyword": {
+"type": "keyword",
+"ignore_above": 256
+}
+}
+},
+"curriculum_status": {
+"type": "long"
+},
+"curriculum_subjectId": {
+"type": "keyword"
+},
+"curriculum_teacherId": {
+"type": "keyword"
+},
+"curriculum_teacherType": {
+"type": "long"
+},
+"curriculum_tutorId": {
+"type": "keyword"
+},
+"curriculum_tutorRealName": {
+"type": "text",
+"fields": {
+"keyword": {
+"type": "keyword",
+"ignore_above": 256
+}
+}
+},
+"department_cityId": {
+"type": "keyword"
+},
+"department_districtId": {
+"type": "keyword"
+},
+"department_id": {
+"type": "keyword"
+},
+"department_name": {
+"type": "text",
+"fields": {
+"keyword": {
+"type": "keyword",
+"ignore_above": 256
+}
+}
+},
+"esDate": {
+"type": "keyword"
+},
+"esDateTime": {
+"type": "long"
+},
+"preRemainCount": {
+"type": "long"
+},
+"remainCount": {
+"type": "long"
+}
+}
+}
+}'

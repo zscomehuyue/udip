@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd"
+       default-autowire="byName">
+
+
+    <bean id="dataCheckService" class="com.hwl.otter.clazz.datacheck.impl.DataCheckServiceImpl">
+        <property name="dataCheckDAO">
+            <ref bean="dataCheckDAO"/>
+        </property>
+    </bean>
+
+    <bean id="checkTableRelService" class="com.hwl.otter.clazz.tablerel.impl.CheckTableRelServiceImpl">
+        <property name="checkTableRelDAO">
+            <ref bean="checkTableRelDAO"/>
+        </property>
+    </bean>
+
+    <bean id="checkRepairLogService" class="com.hwl.otter.clazz.repairlog.impl.CheckRepairLogServiceImpl">
+        <property name="checkRepairLogDAO">
+            <ref bean="checkRepairLogDAO"/>
+        </property>
+    </bean>
+
+</beans>

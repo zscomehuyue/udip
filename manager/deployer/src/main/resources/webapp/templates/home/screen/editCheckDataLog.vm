@@ -1,0 +1,67 @@
+$control.setTemplate("home:navigation.vm")
+<script type='text/javascript' src='dwr/interface/Hello.js'></script>  
+<script type='text/javascript' src='dwr/engine.js'></script>  
+<script type='text/javascript' src='dwr/util.js'></script>  
+<script type='text/javascript' src='js/dbCheck.js'></script>
+<script language="javascript">
+<!--
+	changeNav("repair");
+//-->
+
+</script>
+#macro (addDataMediaMessage $field)
+    #if (!$field.valid) $field.message #end
+#end
+
+<div class="main">
+  <div class="title"> 
+    <h2>编辑数据检查</h2>
+  </div>
+  <div class="crumbs"><a href="checkDataLogList.htm">编辑数据检查</a>&nbsp;&nbsp;>&nbsp;&nbsp;<a href="checkDataLogList.htm">编辑数据检查</a></div>
+
+ <form id="checkDataLogForm" name="checkDataLogForm" method="post" enctype="multipart/form-data">
+	$csrfToken.hiddenField
+	<input type="hidden" name="action" value="check_data_info_action"/>
+	<input type="hidden" name="event_submit_do_edit" value="1" />
+
+ <div class="setting_box">
+	#set ($checkDataInfoGroup = $form.checkDataInfo.defaultInstance)
+    <input type="hidden" name="$checkDataInfoGroup.id.key" value="$!dataCheckDo.id" />
+    <input type="hidden" name="id" value="$!dataCheckDo.id" />
+    <input type="hidden" name="pageIndex" value="$!pageIndex" />
+    <input type="hidden" name="searchKey" value="$!searchKey" />
+    <input type="hidden" name="sourceSchema" value="$!sourceSchema" />
+    <input type="hidden" name="targetSchema" value="$!targetSchema" />
+    <table cellpadding="0" cellspacing="0" class="setting_otter">
+		<tr>
+            <span class="red">#addDataMediaMessage ($checkDataInfoGroup.formCheckDataInfoError)</span>
+        </tr>
+      <tr> 
+        <th width="300">检查开始时间：</th>
+        <td width="500">
+			<input id="tableName" name="$checkDataInfoGroup.checkBeginDate.key" value="#if($!dataCheckDo.checkBeginDate)$!numberFormat.format($!dataCheckDo.checkBeginDate) #else null #end" type="text" class="setting_input"/><span class="red">时间格式：yyyy-MM-dd HH:mm:ss</span>
+			<br />
+			<span class="red">#addDataMediaMessage ($checkDataInfoGroup.checkBeginDate)</span>
+		</td>
+      </tr>
+        <tr>
+            <th width="300">检查结束时间：</th>
+            <td width="500">
+                <input id="tableName" name="$checkDataInfoGroup.checkEndDate.key" value="#if($!dataCheckDo.checkEndDate)$!numberFormat.format($!dataCheckDo.checkEndDate) #else null #end" type="text" class="setting_input"/><span class="red">时间格式：yyyy-MM-dd HH:mm:ss</span>
+                <br />
+                <span class="red">#addDataMediaMessage ($checkDataInfoGroup.checkEndDate)</span>
+            </td>
+        </tr>
+
+
+
+
+    </table>
+	 
+ </div>
+  <div class="btn"><a href="javascript:document.checkDataLogForm.submit();">保存</a></div>
+  </form>
+  <br />
+  <br />
+  <br />
+</div>

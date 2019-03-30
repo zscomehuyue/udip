@@ -1,0 +1,73 @@
+$control.setTemplate("home:navigation.vm")
+<script type='text/javascript' src='dwr/interface/Hello.js'></script>  
+<script type='text/javascript' src='dwr/engine.js'></script>  
+<script type='text/javascript' src='dwr/util.js'></script>  
+<script type='text/javascript' src='js/dbCheck.js'></script>
+<script language="javascript">
+<!--
+	changeNav("datamedia");
+
+//-->
+</script>
+#macro (addDataSourceMessage $field)
+    #if (!$field.valid) $field.message #end
+#end
+
+<div class="main">
+  <div class="title"> 
+    <h2>添加ES数据源</h2>
+  </div>
+  <div class="crumbs"><a href="esDataSourceList.htm">ES数据源配置</a>&nbsp;&nbsp;>&nbsp;&nbsp;<a href="addEsDataSource.htm">添加ES数据源</a></div>
+ 
+ <form name="addEsSourceForm" method="post" enctype="multipart/form-data">
+	$csrfToken.hiddenField
+	<input type="hidden" name="action" value="es_data_media_source_action"/>
+	<input type="hidden" name="event_submit_do_add" value="1" />
+ <div class="setting_box">
+	#set ($esDataMediaSourceGroup = $form.esDataMediaSourceInfo.defaultInstance)
+    <table cellpadding="0" cellspacing="0" class="setting_otter">
+		<span class="red">#addDataSourceMessage ($esDataMediaSourceGroup.formEsDataMediaSourceError)</span>
+      <tr> 
+        <th width="300">数据源名字：</th>
+        <td width="329">
+			<input type="text" name="$esDataMediaSourceGroup.name.key"
+                   value="$!esDataMediaSourceGroup.name.value" class="setting_input"/><span class="red">*</span>
+			<br />
+			<span class="red">#addDataSourceMessage ($esDataMediaSourceGroup.name)</span>
+		</td>
+      </tr>
+      <tr> 
+        <th>类型：</th>
+        <td>
+            <select id="sourceType" name="$esDataMediaSourceGroup.type.key" onchange="changeform();" >
+            <option value="ES">ES</option>
+			</select><span class="red">*</span>
+        </td>
+      </tr>
+	  <tr> 
+        <th>地址：</th>
+        <td>
+			<textarea class="service" id="sourceUrl" name="$esDataMediaSourceGroup.clusterNodes.key" cols="45" rows="5">$!esDataMediaSourceGroup.clusterNodes.value</textarea>
+			<br />
+			<span class="red">#addDataSourceMessage ($esDataMediaSourceGroup.clusterNodes)</span>
+		</td>
+      </tr>
+	  <tr> 
+##        <th><input type='button' value='验证连接数据源' onclick='check();' /></th>
+##        <td>
+##			<span class="red" id="result"></span>
+##		</td>
+      </tr>
+    <tr> 
+        <th>地址示例说明</th>
+        <td>
+            格式如 10.20.10.20:8080;（必须以分号结束，可添多个）
+		</td>
+      </tr>
+      
+    </table>
+          
+ </div>
+  <div class="btn"><a href="javascript:document.addEsSourceForm.submit();">保存</a></div>
+ </form>
+</div>

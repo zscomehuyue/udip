@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd"
+       default-autowire="byName">
+    <bean id="mappingDataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+        <property name="driverClassName" value="${mapping.driver.class.name}"/>
+        <property name="url" value="${mapping.driver.url}"/>
+        <property name="username" value="${mapping.driver.username}"/>
+        <property name="password" value="${mapping.driver.password}"/>
+        <property name="maxActive">
+            <value>20</value>
+        </property>
+        <property name="initialSize">
+            <value>1</value>
+        </property>
+        <property name="maxWait">
+            <value>60000</value>
+        </property>
+        <property name="maxIdle">
+            <value>20</value>
+        </property> <!-- 可以和maxActive保持一致 -->
+        <property name="minIdle">
+            <value>1</value>
+        </property>  <!-- 可以和initialSize保持一致 -->
+        <property name="removeAbandoned">
+            <value>true</value>
+        </property>
+        <property name="removeAbandonedTimeout">
+            <value>180</value>
+        </property>
+        <property name="timeBetweenEvictionRunsMillis">
+            <value>60000</value>
+        </property>
+        <property name="minEvictableIdleTimeMillis">
+            <value>180000</value>
+        </property>
+        <property name="connectionProperties">
+            <value>useUnicode=true;characterEncoding=utf-8</value>
+        </property>
+        <property name="testWhileIdle">
+            <value>true</value>
+        </property>
+        <property name="testOnBorrow">
+            <value>false</value>
+        </property>
+        <property name="testOnReturn">
+            <value>false</value>
+        </property>
+        <property name="validationQuery">
+            <value>SELECT @@version</value>
+        </property>
+        <property name="numTestsPerEvictionRun">
+            <value>-1</value>
+        </property>
+        <property name="defaultAutoCommit">
+            <value>true</value>
+        </property>
+    </bean>
+
+    <bean id="mappingTransactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="mappingDataSource"/>
+    </bean>
+
+    <bean id="mappingTransactionTemplate" class="org.springframework.transaction.support.TransactionTemplate">
+        <property name="transactionManager" ref="mappingTransactionManager"/>
+    </bean>
+    <bean id="mappingSqlMapClient" class="org.springframework.orm.ibatis.SqlMapClientFactoryBean">
+        <property name="dataSource" ref="mappingDataSource"/>
+        <property name="configLocation">
+            <value>classpath:sqlmap/sqlmap.xml</value>
+        </property>
+    </bean>
+
+    <bean id="mappingBaseDAO" class="org.springframework.orm.ibatis.support.SqlMapClientDaoSupport" abstract="true">
+        <property name="sqlMapClient" ref="mappingSqlMapClient"/>
+        <property name="dataSource" ref="mappingDataSource"/>
+    </bean>
+
+
+    <bean id="dataCheckDAO" class="com.hwl.otter.clazz.datacheck.dal.ibatis.IbatisDataCheckDAO" parent="mappingBaseDAO"/>
+
+    <bean id="checkTableRelDAO" class="com.hwl.otter.clazz.tablerel.dal.ibatis.IbatisCheckTableRelDAO" parent="mappingBaseDAO"/>
+
+    <bean id="checkRepairLogDAO" class="com.hwl.otter.clazz.repairlog.dal.ibatis.IbatisCheckRepairLogDAO" parent="mappingBaseDAO"/>
+
+
+</beans>

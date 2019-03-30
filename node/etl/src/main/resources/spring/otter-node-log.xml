@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd"
+       default-autowire="byName" default-lazy-init="true">
+
+
+    <bean id="logMsg" class="org.springframework.aop.framework.ProxyFactoryBean">
+        <property name="optimize" value="false"/>
+        <property name="proxyTargetClass" value="true"/>
+        <property name="targetSource" ref="logMsgTargetSource"/>
+    </bean>
+    <bean id="logMsgTargetSource" class="org.springframework.aop.target.CommonsPoolTargetSource">
+        <property name="minIdle" value="5"/>
+        <property name="maxSize" value="-1"/>
+        <property name="timeBetweenEvictionRunsMillis" value="60000"/><!-- 1分钟进行一次回收 -->
+        <property name="minEvictableIdleTimeMillis" value="600000"/><!-- 10分钟回收空闲的 -->
+        <property name="targetBeanName" value="logMsgTarget"/>
+    </bean>
+    <bean id="logMsgTarget" class="com.alibaba.otter.shared.common.utils.log.LogMsg" scope="prototype"/>
+
+    <bean id="logPerformanceInterceptor" class="com.alibaba.otter.shared.common.utils.log.LogInterceptor"/>
+    <aop:aspectj-autoproxy proxy-target-class="true"/>
+    <aop:config>
+        <aop:pointcut id="logAop" expression="
+        (
+              execution(public * com.alibaba.otter.node.etl..*.*(..))
+                or execution(public * com.alibaba.otter.node..*.*(..))
+                or execution(public * com.alibaba.otter.node.etl.common.index..*.*(..))
+                or execution(public * com.alibaba.otter.common.push.index..*.*(..))
+        )
+        and !execution(public * com.alibaba.otter.shared.common..*.*(..))
+        "/>
+        <aop:advisor pointcut-ref="logAop" advice-ref="logPerformanceInterceptor" order="-2"/>
+    </aop:config>
+
+
+    <!--execution(public * com.alibaba.otter.node.etl..*.*(..))-->
+    <!--or execution(public * com.alibaba.otter.node..*.*(..))-->
+    <!--or execution(public * com.alibaba.otter.node.etl.common.index..*.*(..))-->
+    <!--or execution(public * com.alibaba.otter.common.push.index..*.*(..))-->
+
+
+    <!--or execution(public * com.alibaba.otter.canal.store.memory.MemoryEventStoreWithBuffer.*(..))-->
+
+
+    <!--or   execution(public * com.alibaba.otter.node.etl.load..*.*(..))-->
+    <!--or   execution(public * com.alibaba.otter.node.etl.extract..*.*(..))-->
+    <!--or   execution(public * com.alibaba.otter.node.etl.transform..*.*(..))-->
+
+
+    <!--and !execution(public * com.alibaba.otter.node.etl.common.index..*.*(..))-->
+    <!--and !execution(public * com.alibaba.otter.node.etl.common..*.*(..))-->
+    <!--and !execution(public * com.alibaba.otter.node.common..*.*(..))-->
+    <!--and !execution(public * com.alibaba.otter.node.etl.transform.transformer.*.*(..))-->
+    <!--and !execution(public * com.alibaba.otter.node.etl.*.*(..))-->
+    <!--and !execution(public * com.alibaba.otter.node.etl.extract.extractor.*.*(..))-->
+</beans>

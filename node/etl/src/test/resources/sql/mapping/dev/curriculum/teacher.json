@@ -1,0 +1,42 @@
+curl -H 'Content-Type:application/json; charset=utf-8'     -XPOST   "http://10.200.0.109:9200/teacher/udip/_mapping?pretty"  -d   '{
+      "udip" : {
+        "properties" : {
+          "esDate" : {
+            "type" : "text",
+            "fields" : {
+              "keyword" : {
+                "type" : "keyword",
+                "ignore_above" : 256
+              }
+            }
+          },
+          "esDateTime" : {
+            "type" : "long"
+          },
+          "teacher_cityId" : {
+            "type" : "keyword"
+          },
+          "teacher_id" : {
+            "type" : "keyword"
+          },
+          "teacher_pictureUrl" : {
+            "type" : "keyword"
+          },
+          "teacher_sex" : {
+            "type" : "long"
+          },
+          "teacher_teacherCode" : {
+            "type" : "keyword"
+          },
+          "teacher_teacherName" : {
+            "type" : "text",
+            "fields" : {
+              "keyword" : {
+                "type" : "keyword",
+                "ignore_above" : 256
+              }
+            }
+          }
+        }
+      }
+    }'

@@ -1,0 +1,45 @@
+curl -H 'Content-Type:application/json; charset=utf-8'     -XPOST   "http://192.168.13.188:9200/classtime_type/udip/_mapping?pretty"  -d   '{
+      "udip" : {
+        "properties" : {
+          "classtimeType_cityId" : {
+            "type" : "keyword"
+          },
+          "classtimeType_id" : {
+            "type" : "keyword"
+          },
+          "classtimeType_name" : {
+            "type" : "text",
+            "fields" : {
+              "keyword" : {
+                "type" : "keyword",
+                "ignore_above" : 256
+              }
+            }
+          },
+          "classtimeType_timeTypeClassify" : {
+            "type" : "text",
+            "fields" : {
+              "keyword" : {
+                "type" : "keyword",
+                "ignore_above" : 256
+              }
+            }
+          },
+          "classtimeType_timeTypeClassifyInt" : {
+            "type" : "text",
+            "fields" : {
+              "keyword" : {
+                "type" : "keyword",
+                "ignore_above" : 256
+              }
+            }
+          },
+          "esDate" : {
+            "type" : "keyword"
+          },
+          "esDateTime" : {
+            "type" : "long"
+          }
+        }
+      }
+    }'

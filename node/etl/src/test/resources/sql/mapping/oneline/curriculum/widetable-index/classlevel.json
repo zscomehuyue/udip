@@ -1,0 +1,75 @@
+curl -H 'Content-Type:application/json; charset=utf-8'     -XPOST   "http://192.168.13.188:9200/classlevel/udip/_mapping?pretty"  -d   '{
+      "udip" : {
+        "properties" : {
+          "classlevel_cityId" : {
+            "type" : "keyword"
+          },
+          "classlevel_createDate" : {
+            "type" : "date"
+          },
+          "classlevel_createrId" : {
+            "type" : "keyword"
+          },
+          "classlevel_degree" : {
+            "type" : "float"
+          },
+          "classlevel_deleted" : {
+            "type" : "long"
+          },
+          "classlevel_disable" : {
+            "type" : "long"
+          },
+          "classlevel_displayName" : {
+            "type" : "text",
+            "fields" : {
+              "keyword" : {
+                "type" : "keyword",
+                "ignore_above" : 256
+              }
+            }
+          },
+          "classlevel_id" : {
+            "type" : "keyword"
+          },
+          "classlevel_isLeaf" : {
+            "type" : "long"
+          },
+          "classlevel_isMobi" : {
+            "type" : "long"
+          },
+          "classlevel_modifyDate" : {
+            "type" : "date"
+          },
+          "classlevel_modifyId" : {
+            "type" : "keyword"
+          },
+          "classlevel_name" : {
+            "type" : "text",
+            "fields" : {
+              "keyword" : {
+                "type" : "keyword",
+                "ignore_above" : 256
+              }
+            }
+          },
+          "classlevel_order" : {
+            "type" : "long"
+          },
+          "classlevel_parentId" : {
+            "type" : "keyword"
+          },
+          "classlevel_status" : {
+            "type" : "long"
+          },
+          "classlevel_type" : {
+            "type" : "long"
+          },
+          "esDate" : {
+            "type" : "keyword"
+          },
+          "esDateTime" : {
+            "type" : "long"
+          }
+        }
+      }
+    }'

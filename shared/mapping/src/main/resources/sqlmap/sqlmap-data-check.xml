@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+    <!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"  
+       "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="com.hwl.otter.clazz.datacheck.dal.dataobject.DataCheckDo">
+	<typeAlias alias="dataCheckDo"
+		type="com.hwl.otter.clazz.datacheck.dal.dataobject.DataCheckDo" />
+
+	<resultMap id="dataCheckDoResult" class="dataCheckDo">
+		<result property="id" column="ID" />
+		<result property="channelId" column="CHANNEL_ID" />
+		<result property="pipelineId" column="PIPELINE_ID" />
+		<result property="checkSourceSchema" column="CHECK_SOURCE_SCHEMA" />
+		<result property="checkSourceTable" column="CHECK_SOURCE_TABLE" />
+		<result property="checkTargetSchema" column="CHECK_TARGET_SCHEMA" />
+		<result property="checkTargetTable" column="CHECK_TARGET_TABLE" />
+		<result property="checkBeginDate" column="CHECK_BEGIN_DATE" />
+		<result property="checkEndDate" column="CHECK_END_DATE" />
+		<result property="repairFailNum" column="REPAIR_FAIL_NUM" />
+		<result property="isStart" column="IS_START" />
+		<result property="createDate" column="CREATE_DATE" />
+		<result property="updateDate" column="UPDATE_DATE" />
+		<result property="checkSourceName" column="CHECK_SOURCE_NAME" />
+		<result property="checkTargetName" column="CHECK_TARGET_NAME" />
+	</resultMap>
+	
+	<!-- all columns -->
+	<sql id="dataCheckColumns">ID,CHANNEL_ID,PIPELINE_ID,CHECK_SOURCE_NAME,CHECK_SOURCE_SCHEMA,CHECK_SOURCE_TABLE,CHECK_TARGET_NAME,CHECK_TARGET_SCHEMA,CHECK_TARGET_TABLE,
+		CHECK_BEGIN_DATE,CHECK_END_DATE,REPAIR_FAIL_NUM,IS_START,CREATE_DATE,UPDATE_DATE</sql>
+
+	<insert id="insertDataCheckDo" parameterClass="dataCheckDo">
+		insert into check_data_info
+		(CHANNEL_ID,PIPELINE_ID,CHECK_SOURCE_NAME,CHECK_SOURCE_SCHEMA,CHECK_SOURCE_TABLE,
+		CHECK_TARGET_NAME,CHECK_TARGET_SCHEMA,CHECK_TARGET_TABLE
+		,CHECK_BEGIN_DATE,CHECK_END_DATE,REPAIR_FAIL_NUM,IS_START,CREATE_DATE,UPDATE_DATE)
+		values (#channelId#,#pipelineId#,#checkSourceName#,#checkSourceSchema#,#checkSourceTable#,#checkTargetName#,#checkTargetSchema#,
+		#checkTargetTable#,#checkBeginDate#,#checkEndDate#,#repairFailNum#,#isStart#,now(),now())
+	</insert>
+
+
+
+	<update id="updateDataCheckDoById" parameterClass="dataCheckDo">
+		update check_data_info
+		<dynamic prepend="set">
+			UPDATE_DATE=now(),
+			CHECK_BEGIN_DATE=#checkBeginDate#,
+			CHECK_END_DATE=#checkEndDate#,
+			IS_START=#isStart#,
+			<isNotEmpty property="repairFailNum" prepend=",">
+				REPAIR_FAIL_NUM=#repairFailNum#
+			</isNotEmpty>
+		</dynamic>
+		WHERE ID = #id#
+	</update>
+
+
+	<delete id="deleteCheckData" parameterClass="int">
+		delete from check_data_info where ID = #value#
+	</delete>
+
+	<select id="findDataCheckByCondition" resultMap="dataCheckDoResult" parameterClass="dataCheckDo">
+		select
+		<include refid="dataCheckColumns" />
+		from check_data_info
+		<dynamic prepend="where" >
+			<isNotEmpty property="channelId" prepend="and">
+				CHANNEL_ID=#channelId#
+			</isNotEmpty>
+			<isNotEmpty property="pipelineId" prepend="and">
+				PIPELINE_ID=#pipelineId#
+			</isNotEmpty>
+			<isNotEmpty property="checkSourceSchema" prepend="and">
+				CHECK_SOURCE_SCHEMA=#checkSourceSchema#
+			</isNotEmpty>
+			<isNotEmpty property="checkSourceTable" prepend="and">
+				CHECK_SOURCE_TABLE=#checkSourceTable#
+			</isNotEmpty>
+			<isNotEmpty property="checkTargetSchema" prepend="and">
+				CHECK_TARGET_SCHEMA=#checkTargetSchema#
+			</isNotEmpty>
+			<isNotEmpty property="checkTargetTable" prepend="and">
+				CHECK_TARGET_TABLE=#checkTargetTable#
+			</isNotEmpty>
+		</dynamic>
+	</select>
+
+
+
+	<select id="getCheckDataLogCount" resultClass="Integer">
+		select count(*) from check_data_info
+		<dynamic prepend="where">
+			<isNotEmpty property="searchKey" prepend="and">
+				(PIPELINE_ID like concat('%',replace(#searchKey#,'_','\_'),'%')
+				or CHANNEL_ID like concat('%',replace(#searchKey#,'_','\_'),'%')
+				or CHECK_SOURCE_SCHEMA like concat('%',replace(#searchKey#,'_','\_'),'%')
+				or CHECK_SOURCE_TABLE like concat('%',replace(#searchKey#,'_','\_'),'%')
+				or CHECK_TARGET_SCHEMA like concat('%',replace(#searchKey#,'_','\_'),'%')
+				or CHECK_TARGET_TABLE like concat('%',replace(#searchKey#,'_','\_'),'%'))
+			</isNotEmpty>
+			<isNotNull property="checkSourceName" prepend="and">
+				CHECK_SOURCE_NAME = #checkSourceName#
+			</isNotNull>
+			<isNotNull property="checkSourceSchema" prepend="and">
+				CHECK_SOURCE_SCHEMA = #checkSourceSchema#
+			</isNotNull>
+			<isNotNull property="checkTargetSchema" prepend="and">
+				CHECK_TARGET_SCHEMA = #checkTargetSchema#
+			</isNotNull>
+			<isNotNull property="checkTargetName" prepend="and">
+				CHECK_TARGET_NAME = #checkTargetName#
+			</isNotNull>
+		</dynamic>
+	</select>
+
+
+	<select id="listCheckDataLog" resultMap="dataCheckDoResult">
+		select
+		<include refid="dataCheckColumns" />
+		from check_data_info
+		<dynamic prepend="where">
+			<isNotEmpty property="searchKey" prepend="and">
+				(PIPELINE_ID like concat('%',replace(#searchKey#,'_','\_'),'%')
+				or CHANNEL_ID like concat('%',replace(#searchKey#,'_','\_'),'%')
+				or CHECK_SOURCE_SCHEMA like concat('%',replace(#searchKey#,'_','\_'),'%')
+				or CHECK_SOURCE_TABLE like concat('%',replace(#searchKey#,'_','\_'),'%')
+				or CHECK_TARGET_SCHEMA like concat('%',replace(#searchKey#,'_','\_'),'%')
+				or CHECK_TARGET_TABLE like concat('%',replace(#searchKey#,'_','\_'),'%'))
+			</isNotEmpty>
+			<isNotNull property="checkSourceName" prepend="and">
+				CHECK_SOURCE_NAME = #checkSourceName#
+			</isNotNull>
+			<isNotNull property="checkSourceSchema" prepend="and">
+				CHECK_SOURCE_SCHEMA = #checkSourceSchema#
+			</isNotNull>
+			<isNotNull property="checkTargetSchema" prepend="and">
+				CHECK_TARGET_SCHEMA = #checkTargetSchema#
+			</isNotNull>
+			<isNotNull property="checkTargetName" prepend="and">
+				CHECK_TARGET_NAME = #checkTargetName#
+			</isNotNull>
+		</dynamic>
+
+		ORDER BY ID DESC
+
+		<dynamic>
+			<isNotEmpty property="offset" >
+				<isNotEmpty property="length">
+					limit #offset#, #length#
+				</isNotEmpty>
+			</isNotEmpty>
+		</dynamic>
+	</select>
+
+
+
+	<select id="getCheckDataLogById" resultMap="dataCheckDoResult" parameterClass="Long">
+		select
+		<include refid="dataCheckColumns" />
+		from check_data_info
+		where id=#id#
+	</select>
+
+
+
+	<select id="getCheckSourceSchemaList" resultClass="java.lang.String">
+		select CONCAT(r.CHECK_SOURCE_NAME," ",r.CHECK_SOURCE_SCHEMA) from check_data_info r GROUP BY r.CHECK_SOURCE_NAME,r.CHECK_SOURCE_SCHEMA;
+	</select>
+
+	<select id="getCheckTargetSchemaList" resultClass="java.lang.String">
+		select CONCAT(r.CHECK_TARGET_NAME," ",r.CHECK_TARGET_SCHEMA) from check_data_info r GROUP BY r.CHECK_TARGET_NAME,r.CHECK_TARGET_SCHEMA;
+	</select>
+
+
+</sqlMap>  

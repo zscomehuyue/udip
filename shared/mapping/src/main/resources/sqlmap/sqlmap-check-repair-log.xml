@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+    <!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"  
+       "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="com.hwl.otter.clazz.repairlog.dal.dataobject.CheckRepairLogDo">
+	<typeAlias alias="checkRepairLogDo"
+		type="com.hwl.otter.clazz.repairlog.dal.dataobject.CheckRepairLogDo" />
+
+	<resultMap id="checkRepairLogDoResult" class="checkRepairLogDo">
+		<result property="id" column="ID" />
+		<result property="channelId" column="CHANNEL_ID" />
+		<result property="pipelineId" column="PIPELINE_ID" />
+		<result property="checkSourceSchema" column="CHECK_SOURCE_SCHEMA" />
+		<result property="checkSourceTable" column="CHECK_SOURCE_TABLE" />
+		<result property="checkTargetSchema" column="CHECK_TARGET_SCHEMA" />
+		<result property="checkTargetTable" column="CHECK_TARGET_TABLE" />
+		<result property="repairBeginDate" column="REPAIR_BEGIN_DATE" />
+		<result property="repairEndDate" column="REPAIR_END_DATE" />
+		<result property="repairNum" column="REPAIR_NUM" />
+		<result property="repairIsSuccess" column="REPAIR_IS_SUCCESS" />
+		<result property="createDate" column="CREATE_DATE" />
+		<result property="updateDate" column="UPDATE_DATE" />
+		<result property="checkSourceName" column="CHECK_SOURCE_NAME" />
+		<result property="checkTargetName" column="CHECK_TARGET_NAME" />
+	</resultMap>
+	
+	<!-- all columns -->
+	<sql id="checkRepairLogDoColumns">ID,CHANNEL_ID,PIPELINE_ID,CHECK_SOURCE_NAME,CHECK_SOURCE_SCHEMA,CHECK_SOURCE_TABLE,
+			CHECK_TARGET_NAME,CHECK_TARGET_SCHEMA,
+			CHECK_TARGET_TABLE,REPAIR_BEGIN_DATE,REPAIR_END_DATE,REPAIR_NUM,REPAIR_IS_SUCCESS,CREATE_DATE,UPDATE_DATE</sql>
+
+	<insert id="insertcheckRepairLogDo" parameterClass="checkRepairLogDo">
+		insert into check_repair_log
+		(CHANNEL_ID,PIPELINE_ID,CHECK_SOURCE_NAME,CHECK_SOURCE_SCHEMA,CHECK_SOURCE_TABLE,CHECK_TARGET_NAME,CHECK_TARGET_SCHEMA,CHECK_TARGET_TABLE
+		,REPAIR_BEGIN_DATE,REPAIR_END_DATE,REPAIR_NUM,REPAIR_IS_SUCCESS,CREATE_DATE,UPDATE_DATE)
+		values (#channelId#,#pipelineId#,#checkSourceName#,#checkSourceSchema#,#checkSourceTable#,#checkTargetName#,#checkTargetSchema#,
+		#checkTargetTable#,#repairBeginDate#,#repairEndDate#,#repairNum#,#repairIsSuccess#,now(),now())
+	</insert>
+
+
+
+	<update id="updatecheckRepairLogDoById" parameterClass="checkRepairLogDo">
+		update check_repair_log
+		<dynamic prepend="set">
+			UPDATE_DATE=now(),
+			<isNotEmpty property="repairIsSuccess" prepend=",">
+				REPAIR_IS_SUCCESS=#repairIsSuccess#
+			</isNotEmpty>
+		</dynamic>
+		WHERE ID = #id#
+	</update>
+
+
+	<update id="updatecheckRepairLogDoByCondition" parameterClass="checkRepairLogDo">
+		update check_repair_log
+		<dynamic prepend="set">
+			UPDATE_DATE=now(),
+			REPAIR_IS_SUCCESS=#repairIsSuccess#
+		</dynamic>
+		<dynamic prepend="where" >
+			<isNotEmpty property="pipelineId" prepend="and">
+				PIPELINE_ID=#pipelineId#
+			</isNotEmpty>
+			<isNotEmpty property="checkSourceSchema" prepend="and">
+				CHECK_SOURCE_SCHEMA=#checkSourceSchema#
+			</isNotEmpty>
+			<isNotEmpty property="checkSourceTable" prepend="and">
+				CHECK_SOURCE_TABLE=#checkSourceTable#
+			</isNotEmpty>
+			<isNotEmpty property="checkTargetSchema" prepend="and">
+				CHECK_TARGET_SCHEMA=#checkTargetSchema#
+			</isNotEmpty>
+			<isNotEmpty property="checkTargetTable" prepend="and">
+				CHECK_TARGET_TABLE=#checkTargetTable#
+			</isNotEmpty>
+			<isNotEmpty property="repairBeginDate" prepend="and">
+				REPAIR_BEGIN_DATE=#repairBeginDate#
+			</isNotEmpty>
+			<isNotEmpty property="repairEndDate" prepend="and">
+				REPAIR_END_DATE=#repairEndDate#
+			</isNotEmpty>
+		</dynamic>
+	</update>
+
+
+	<select id="findCheckRepairLogDoByCondition" resultMap="checkRepairLogDoResult" parameterClass="checkRepairLogDo">
+		select
+		<include refid="checkRepairLogDoColumns" />
+		from check_repair_log
+		<dynamic prepend="where" >
+			<isNotEmpty property="channelId" prepend="and">
+				CHANNEL_ID=#channelId#
+			</isNotEmpty>
+			<isNotEmpty property="pipelineId" prepend="and">
+				PIPELINE_ID=#pipelineId#
+			</isNotEmpty>
+			<isNotEmpty property="checkSourceSchema" prepend="and">
+				CHECK_SOURCE_SCHEMA=#checkSourceSchema#
+			</isNotEmpty>
+			<isNotEmpty property="checkSourceTable" prepend="and">
+				CHECK_SOURCE_TABLE=#checkSourceTable#
+			</isNotEmpty>
+			<isNotEmpty property="checkTargetSchema" prepend="and">
+				CHECK_TARGET_SCHEMA=#checkTargetSchema#
+			</isNotEmpty>
+			<isNotEmpty property="checkTargetTable" prepend="and">
+				CHECK_TARGET_TABLE=#checkTargetTable#
+			</isNotEmpty>
+			<isNotEmpty property="repairBeginDate" prepend="and">
+				REPAIR_BEGIN_DATE=#repairBeginDate#
+			</isNotEmpty>
+			<isNotEmpty property="repairEndDate" prepend="and">
+				REPAIR_END_DATE=#repairEndDate#
+			</isNotEmpty>
+		</dynamic>
+		 order by REPAIR_NUM DESC
+	</select>
+
+
+	<select id="findCheckRepairLogById" resultMap="checkRepairLogDoResult">
+		select
+		<include refid="checkRepairLogDoColumns" />
+		from check_repair_log where ID = #id#
+	</select>
+
+	<select id="getCheckRepairLogCount" resultClass="Integer">
+		select count(*) from check_repair_log
+		<dynamic prepend="where">
+			<isNotEmpty property="searchKey" prepend="and">
+				(PIPELINE_ID like concat('%',replace(#searchKey#,'_','\_'),'%')
+				or CHANNEL_ID like concat('%',replace(#searchKey#,'_','\_'),'%')
+				or CHECK_SOURCE_SCHEMA like concat('%',replace(#searchKey#,'_','\_'),'%')
+				or CHECK_SOURCE_TABLE like concat('%',replace(#searchKey#,'_','\_'),'%')
+				or CHECK_TARGET_SCHEMA like concat('%',replace(#searchKey#,'_','\_'),'%')
+				or CHECK_TARGET_TABLE like concat('%',replace(#searchKey#,'_','\_'),'%')
+				or REPAIR_NUM like concat('%',replace(#searchKey#,'_','\_'),'%'))
+			</isNotEmpty>
+			<isNotNull property="checkSourceName" prepend="and">
+				CHECK_SOURCE_NAME = #checkSourceName#
+			</isNotNull>
+			<isNotNull property="checkSourceSchema" prepend="and">
+				CHECK_SOURCE_SCHEMA = #checkSourceSchema#
+			</isNotNull>
+			<isNotNull property="checkSourceTable" prepend="and">
+				CHECK_SOURCE_TABLE = #checkSourceTable#
+			</isNotNull>
+			<isNotNull property="repairIsSuccess" prepend="and">
+				REPAIR_IS_SUCCESS = #repairIsSuccess#
+			</isNotNull>
+		</dynamic>
+	</select>
+
+
+	<select id="listCheckRepairLog" resultMap="checkRepairLogDoResult">
+		select
+		<include refid="checkRepairLogDoColumns" />
+		from check_repair_log
+		<dynamic prepend="where">
+			<isNotEmpty property="searchKey" prepend="and">
+				(PIPELINE_ID like concat('%',replace(#searchKey#,'_','\_'),'%')
+				or CHANNEL_ID like concat('%',replace(#searchKey#,'_','\_'),'%')
+				or CHECK_SOURCE_SCHEMA like concat('%',replace(#searchKey#,'_','\_'),'%')
+				or CHECK_SOURCE_TABLE like concat('%',replace(#searchKey#,'_','\_'),'%')
+				or CHECK_TARGET_SCHEMA like concat('%',replace(#searchKey#,'_','\_'),'%')
+				or CHECK_TARGET_TABLE like concat('%',replace(#searchKey#,'_','\_'),'%')
+				or REPAIR_NUM like concat('%',replace(#searchKey#,'_','\_'),'%'))
+			</isNotEmpty>
+			<isNotNull property="checkSourceName" prepend="and">
+				CHECK_SOURCE_NAME = #checkSourceName#
+			</isNotNull>
+			<isNotNull property="checkSourceSchema" prepend="and">
+				 CHECK_SOURCE_SCHEMA = #checkSourceSchema#
+			</isNotNull>
+			<isNotNull property="checkSourceTable" prepend="and">
+				 CHECK_SOURCE_TABLE = #checkSourceTable#
+			</isNotNull>
+			<isNotNull property="repairIsSuccess" prepend="and">
+				 REPAIR_IS_SUCCESS = #repairIsSuccess#
+			</isNotNull>
+		</dynamic>
+
+		ORDER BY ID DESC
+
+		<dynamic>
+			<isNotEmpty property="offset" >
+				<isNotEmpty property="length">
+					limit #offset#, #length#
+				</isNotEmpty>
+			</isNotEmpty>
+		</dynamic>
+	</select>
+
+
+
+
+	<select id="getRepairFailData" resultClass="checkRepairLogDo">
+		SELECT
+			PIPELINE_ID pipelineId,
+			CHECK_SOURCE_SCHEMA checkSourceSchema,
+			CHECK_SOURCE_TABLE checkSourceTable,
+			CHECK_TARGET_SCHEMA checkTargetSchema,
+			CHECK_TARGET_TABLE checkTargetTable,
+			REPAIR_BEGIN_DATE repairBeginDate,
+			REPAIR_END_DATE repairEndDate
+		FROM
+			check_repair_log
+		WHERE
+			REPAIR_IS_SUCCESS = '1'
+		GROUP BY
+			PIPELINE_ID,
+			CHECK_SOURCE_SCHEMA,
+			CHECK_SOURCE_TABLE,
+			CHECK_TARGET_SCHEMA,
+			CHECK_TARGET_TABLE,
+			REPAIR_BEGIN_DATE,
+			REPAIR_END_DATE;
+	</select>
+
+
+	<select id="getSourceSchemaList" resultClass="java.lang.String">
+		select CONCAT(r.CHECK_SOURCE_NAME," ",r.CHECK_SOURCE_SCHEMA) from check_repair_log r GROUP BY r.CHECK_SOURCE_NAME,r.CHECK_SOURCE_SCHEMA;
+	</select>
+
+	<select id="getSourceTableList" resultClass="java.lang.String">
+		select r.CHECK_SOURCE_TABLE from check_repair_log r GROUP BY r.CHECK_SOURCE_TABLE;
+	</select>
+
+	<delete id="deleteRepairLog" parameterClass="long">
+		delete from check_repair_log where ID = #value#
+	</delete>
+
+</sqlMap>  

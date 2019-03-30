@@ -1,0 +1,27 @@
+{
+  "udip" : {
+    "properties" : {
+      "classtime_id" : {
+        "type" : "keyword"
+      },
+      "classtime_period" : {
+        "type" : "text",
+        "fields" : {
+          "keyword" : {
+            "type" : "keyword",
+            "ignore_above" : 256
+          }
+        }
+      },
+      "classtime_periodType" : {
+        "type" : "long"
+      },
+      "esDate" : {
+        "type" : "keyword"
+      },
+      "esDateTime" : {
+        "type" : "long"
+      }
+    }
+  }
+}

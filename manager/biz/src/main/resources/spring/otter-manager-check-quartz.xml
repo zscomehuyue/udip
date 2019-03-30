@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:aop="http://www.springframework.org/schema/aop" xmlns:lang="http://www.springframework.org/schema/lang"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+           http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd
+           http://www.springframework.org/schema/lang http://www.springframework.org/schema/lang/spring-lang-2.0.xsd
+           http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd
+           http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd"
+       default-autowire="byName">
+
+    <bean id="indexConfigServiceFactory" class="com.alibaba.otter.common.push.index.wide.config.IndexConfigServiceFactory">
+        <property name="dynamicIndexdMap">
+            <map>
+                <entry key="rgse">
+                    <bean class="com.alibaba.otter.common.push.index.wide.config.RegistStageDynmaicIndexService"/>
+                </entry>
+            </map>
+        </property>
+    </bean>
+
+    <bean id="checkService" class="com.alibaba.otter.manager.biz.check.CheckService">
+        <property name="dataCheckService">
+            <ref bean="dataCheckService"></ref>
+        </property>
+        <property name="dataSourceService">
+            <ref bean="dataSourceService"></ref>
+        </property>
+        <property name="checkTableRelService">
+            <ref bean="checkTableRelService"></ref>
+        </property>
+        <property name="checkRepairLogService">
+            <ref bean="checkRepairLogService"></ref>
+        </property>
+        <property name="systemParameterService">
+            <ref bean="systemParameterService"></ref>
+        </property>
+        <property name="warningTerminProcess">
+            <ref bean="warningTerminProcess"></ref>
+        </property>
+        <property name="defaultEsService">
+            <ref bean="defaultLoadIndexService"></ref>
+        </property>
+        <property name="pipelineService">
+            <ref bean="pipelineService"></ref>
+        </property>
+        <property name="indexConfigServiceFactory">
+            <ref bean="indexConfigServiceFactory"></ref>
+        </property>
+    </bean>
+
+    <bean id="checkQuartz" class="com.alibaba.otter.manager.biz.check.CheckQuartz">
+        <property name="checkService">
+            <ref bean="checkService"></ref>
+        </property>
+        <property name="dataCheckService">
+            <ref bean="dataCheckService"></ref>
+        </property>
+        <property name="dataMediaPairService">
+            <ref bean="dataMediaPairService"></ref>
+        </property>
+        <property name="channelService">
+            <ref bean="channelService"></ref>
+        </property>
+        <property name="redisTemplate">
+            <ref bean="redisTemplate"></ref>
+        </property>
+        <property name="swich" value="${check.repair.swich}"></property>
+        <property name="swichKey" value="${otter.domainName}-check-repair-swich"></property>
+
+    </bean>
+
+    <!-- 法务数据同步 -->
+    <bean id="checkJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject">   <!-- targetObject是Spring定时器的特殊属性 -->
+            <ref bean="checkQuartz"/> <!-- 这个就是具体实现类，如果是注解，则必须为component指定value -->
+        </property>
+        <property name="targetMethod">    <!-- targetMethod是Spring定时器的特殊属性 -->
+            <value>execute</value><!-- 就是java类中的任务方法 -->
+        </property>
+    </bean>
+
+    <!--<bean id="checkQuartzTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">-->
+    <!--<property name="jobDetail">&lt;!&ndash; jobDetail是Spring定时器的特殊属性 &ndash;&gt;-->
+    <!--<ref bean="checkJobDetail" />-->
+    <!--</property>-->
+    <!--<property name="cronExpression">-->
+    <!--<value>0 0/1 * * * ?</value> &lt;!&ndash; cronExpression是Spring定时器的特殊属性 &ndash;&gt;-->
+    <!--</property>-->
+    <!--<property name="startDelay">-->
+    <!--<value>0</value> &lt;!&ndash; 容器启动后 延时 0毫秒 后 定时器开始启动 &ndash;&gt;-->
+    <!--</property>-->
+    <!--</bean>-->
+
+
+    <bean id="checkQuartzTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerFactoryBean">
+        <property name="jobDetail" ref="checkJobDetail"/>
+        <!-- 延迟2分钟启动 -->
+        <property name="startDelay" value="120000"/>
+        <!--<property name="startDelay" value="000" />-->
+        <!-- 5分钟执行一次 -->
+        <property name="repeatInterval" value="500000"/>
+        <!--<property name="repeatInterval" value="60000" />-->
+    </bean>
+
+    <!-- 触发器 -->
+    <bean autowire="no" lazy-init="false" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        <property name="triggers">    <!-- triggers是Spring定时器的特殊属性 -->
+            <list>
+                <ref bean="checkQuartzTrigger"/>
+            </list>
+        </property>
+        <property name="autoStartup" value="true"/>  <!-- 自动启动定时任务 -->
+    </bean>
+
+
+    <bean id="wideIndexService" class="com.alibaba.otter.manager.biz.check.WideIndexService" init-method="initial" lazy-init="false">
+        <property name="dataSourceService">
+            <ref bean="dataSourceService"></ref>
+        </property>
+        <property name="indexService">
+            <ref bean="defaultLoadIndexService"></ref>
+        </property>
+        <property name="defaultIndexService">
+            <ref bean="defaultLoadIndexService"></ref>
+        </property>
+        <property name="pipelineService">
+            <ref bean="pipelineService"></ref>
+        </property>
+        <property name="channelService">
+            <ref bean="channelService"></ref>
+        </property>
+        <property name="wideTableService">
+            <ref bean="wideTableService"></ref>
+        </property>
+    </bean>
+
+
+</beans>

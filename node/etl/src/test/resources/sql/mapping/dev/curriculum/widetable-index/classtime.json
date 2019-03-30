@@ -1,0 +1,27 @@
+curl -H 'Content-Type:application/json; charset=utf-8'     -XPOST   "http://10.200.0.109:9200/classtime/udip/_mapping?pretty"  -d   '{
+      "udip" : {
+        "properties" : {
+          "classtime_id" : {
+            "type" : "keyword"
+          },
+          "classtime_period" : {
+            "type" : "text",
+            "fields" : {
+              "keyword" : {
+                "type" : "keyword",
+                "ignore_above" : 256
+              }
+            }
+          },
+          "classtime_periodType" : {
+            "type" : "long"
+          },
+          "esDate" : {
+            "type" : "keyword"
+          },
+          "esDateTime" : {
+            "type" : "long"
+          }
+        }
+      }
+    }'

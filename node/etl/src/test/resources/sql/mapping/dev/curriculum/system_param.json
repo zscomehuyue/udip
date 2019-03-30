@@ -1,0 +1,45 @@
+curl -H 'Content-Type:application/json; charset=utf-8'     -XPOST   "http://10.200.0.109:9200/system_param/udip/_mapping?pretty"  -d   '{
+  "udip": {
+    "properties": {
+      "esDate": {
+        "type": "keyword"
+      },
+      "esDateTime": {
+        "type": "long"
+      },
+      "systemParam_cityId": {
+        "type": "keyword"
+      },
+      "systemParam_createDate": {
+        "type": "date"
+      },
+      "systemParam_deleted": {
+        "type": "long"
+      },
+      "systemParam_id": {
+        "type": "keyword"
+      },
+      "systemParam_paramAlias": {
+        "type": "text",
+        "fields": {
+          "keyword": {
+            "type": "keyword",
+            "ignore_above": 256
+          }
+        }
+      },
+      "systemParam_paramName": {
+        "type": "text",
+        "fields": {
+          "keyword": {
+            "type": "keyword",
+            "ignore_above": 256
+          }
+        }
+      },
+      "systemParam_version": {
+        "type": "long"
+      }
+    }
+  }
+}'

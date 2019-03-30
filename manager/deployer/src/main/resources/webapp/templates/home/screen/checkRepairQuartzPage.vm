@@ -1,0 +1,50 @@
+$control.setTemplate("home:navigation.vm")
+#set($user = $rundata.request.session.getAttribute("managerUser"))
+<script type="text/javascript" src="js/trcolor.js"></script>
+<script type="text/javascript" src="js/jquery-1.4.2.min.js"></script> 
+<script type="text/javascript" src="js/jquery.simplemodal-1.4.js"></script> 
+<script language="javascript">
+	changeNav("repair");
+</script>
+
+
+<!--页面主体-->
+<div class="main">
+   
+  <div class="title"> 
+    <h2>修复管理</h2>
+  </div>
+   <div class="crumbs"><a href="checkTableRelList.htm">定时器管理</a>
+	   <span class="red">提示:数据修复需要Pipeline开启自由门功能以及在源数据中创建自由门相关数据库表</span>
+   </div>
+
+	<br/>
+	<br/>
+	<br/>
+	<br/>
+	<br/>
+	提示：开启后会定时进行检查修改，部署多套Manager环境时注意不要重复开启，以免不必要的消耗。
+    <br/>
+    <br/>
+	<span style="font-weight: bold">当前状态：</span>
+	#if($!redisSwich == 'true')
+		运行
+		<br/>
+        <br/>
+		#set ($redoZkLink = $homeModule.setTarget("checkRepairQuartzPage.vm").addQueryData("swich", "false"))
+		<div class="btn"><a href="javascript:if(confirm('确实要停止运行吗?'))location='$redoZkLink'">停止运行</a></div>
+	#else
+		停止
+        <br/>
+        <br/>
+		#set ($redoZkLink = $homeModule.setTarget("checkRepairQuartzPage.vm").addQueryData("swich", "true"))
+		<div class="btn"><a href="javascript:if(confirm('确实要启动吗?'))location='$redoZkLink'">启动运行</a></div>
+	#end
+
+
+   
+
+
+     
+
+</div>

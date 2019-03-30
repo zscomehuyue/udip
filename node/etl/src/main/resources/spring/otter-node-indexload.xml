@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="	   http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd"
+       default-autowire="byName" default-lazy-init="true">
+
+    <bean id="defaultEventDataIndexService" class="com.alibaba.otter.node.etl.common.index.service.EventDataIndexService">
+        <property name="indexService" ref="defaultEsService"/>
+        <property name="indexConfigServiceFactory" ref="indexConfigServiceFactory"/>
+    </bean>
+    <bean id="indexConfigServiceFactory" class="com.alibaba.otter.common.push.index.wide.config.IndexConfigServiceFactory">
+        <property name="dynamicIndexdMap">
+            <map>
+                <entry key="rgse">
+                    <bean class="com.alibaba.otter.common.push.index.wide.config.RegistStageDynmaicIndexService"/>
+                </entry>
+            </map>
+        </property>
+    </bean>
+    <bean id="loadIndexService" class="com.alibaba.otter.node.etl.common.index.service.LoadIndexService">
+        <property name="configClientService" ref="configClientService"/>
+        <property name="indexConfigServiceFactory" ref="indexConfigServiceFactory"/>
+        <property name="eventDataIndexService" ref="defaultEventDataIndexService"/>
+    </bean>
+    <bean id="indexServiceFactory" class="com.alibaba.otter.node.etl.common.index.service.IndexServiceFactory">
+        <property name="loadIndexService" ref="loadIndexService"/>
+    </bean>
+    <bean id="indexLoadStatsTracker" class="com.alibaba.otter.node.etl.load.loader.LoadStatsTracker"/>
+    <bean id="otterIndexLoaderFactory" class="com.alibaba.otter.node.etl.load.loader.OtterLoaderFactory">
+        <property name="dataBatchLoader" ref="dataBatchIndexLoader"/>
+        <property name="loadStatsTracker" ref="indexLoadStatsTracker"/>
+    </bean>
+    <bean id="dataBatchIndexLoader" class="com.alibaba.otter.node.etl.load.loader.index.DataBatchIndexLoader">
+        <property name="loadInterceptor" ref="indexLoadInterceptor"/>
+    </bean>
+    <bean id="indexLoadAction" class="org.springframework.aop.framework.ProxyFactoryBean">
+        <property name="optimize" value="false"/>
+        <property name="proxyTargetClass" value="true"/>
+        <property name="targetSource" ref="indexLoadActionTargetSource"/>
+    </bean>
+    <bean id="indexLoadActionTargetSource" class="org.springframework.aop.target.CommonsPoolTargetSource">
+        <property name="minIdle" value="1"/>
+        <property name="maxSize" value="-1"/>
+        <property name="timeBetweenEvictionRunsMillis" value="60000"/><!-- 1分钟进行一次回收 -->
+        <property name="minEvictableIdleTimeMillis" value="600000"/><!-- 10分钟回收空闲的 -->
+        <property name="targetBeanName" value="indexLoadActionTarget"/>
+    </bean>
+    <bean id="indexLoadActionTarget" class="com.alibaba.otter.node.etl.load.loader.index.IndexLoadAction" scope="prototype">
+        <property name="retry" value="3"/>
+        <property name="retryWait" value="3000"/>
+        <property name="poolSize" value="5"/>
+        <property name="interceptor" ref="indexLoadInterceptor"/>
+        <property name="loadStatsTracker" ref="indexLoadStatsTracker"/>
+        <property name="indexServiceFactory" ref="indexServiceFactory"/>
+    </bean>
+
+    <!-- interceptor -->
+    <bean id="indexLoadInterceptor" class="com.alibaba.otter.node.etl.load.loader.interceptor.ChainLoadInterceptor">
+        <property name="interceptors">
+            <list>
+                <ref bean="indexLogLoadInterceptor"/>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="indexLogLoadInterceptor"
+          class="com.alibaba.otter.node.etl.load.loader.index.interceptor.log.LogIndexLoadInterceptor">
+        <property name="dump" value="true"/>
+    </bean>
+
+
+
+</beans>

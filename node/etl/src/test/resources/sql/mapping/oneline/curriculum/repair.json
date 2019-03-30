@@ -1,0 +1,132 @@
+curl -H 'Content-Type:application/json; charset=utf-8'     -XPOST   "http://192.168.13.188:9200/repair/udip/_mapping?pretty"  -d   '{
+"udip": {
+"properties": {
+"datas": {
+"properties": {
+"columns": {
+"properties": {
+"columnName": {
+"type": "keyword"
+},
+"columnType": {
+"type": "long"
+},
+"columnValue": {
+"type": "keyword"
+}
+}
+},
+"keys": {
+"properties": {
+"columnName": {
+"type": "keyword"
+},
+"columnType": {
+"type": "long"
+},
+"columnValue": {
+"type": "keyword"
+}
+}
+},
+"schemaName": {
+"type": "keyword"
+},
+"tableId": {
+"type": "long"
+},
+"tableName": {
+"type": "keyword"
+},
+"updatedColumns": {
+"properties": {
+"$ref": {
+"type": "keyword"
+}
+}
+},
+"updatedKeys": {
+"properties": {
+"$ref": {
+"type": "keyword"
+}
+}
+}
+}
+},
+"doingTime": {
+"type": "long"
+},
+"esDate": {
+"type": "keyword"
+},
+"esDateTime": {
+"type": "long"
+},
+"id": {
+"type": "keyword"
+},
+"indexMediaSource": {
+"properties": {
+"id": {
+"type": "long"
+},
+"name": {
+"type": "keyword"
+},
+"type": {
+"type": "keyword"
+},
+"url": {
+"type": "text",
+"fields": {
+"keyword": {
+"type": "keyword",
+"ignore_above": 256
+}
+}
+}
+}
+},
+"mainTableName": {
+"type": "keyword"
+},
+"mainTablePkIdName": {
+"type": "keyword"
+},
+"maxRepairTimes": {
+"type": "long"
+},
+"maxTimeOutSencods": {
+"type": "long"
+},
+"weight": {
+"type": "long"
+},
+"piplieId": {
+"type": "long"
+},
+"realTableFkIdName": {
+"type": "keyword"
+},
+"retryTimes": {
+"type": "long"
+},
+"slaveTableName": {
+"type": "keyword"
+},
+"slaveTablePkIdName": {
+"type": "keyword"
+},
+"status": {
+"type": "long"
+},
+"wideIndex": {
+"type": "keyword"
+},
+"wideType": {
+"type": "keyword"
+}
+}
+}
+}'

@@ -1,0 +1,96 @@
+$control.setTemplate("home:navigation.vm")
+<script type='text/javascript' src='dwr/interface/Hello.js'></script>  
+<script type='text/javascript' src='dwr/engine.js'></script>  
+<script type='text/javascript' src='dwr/util.js'></script>  
+<script type='text/javascript' src='js/dbCheck.js'></script>
+<script language="javascript">
+<!--
+	changeNav("datamedia");
+
+//-->
+</script>
+#macro (addDataSourceMessage $field)
+    #if (!$field.valid) $field.message #end
+#end
+
+<div class="main">
+  <div class="title"> 
+    <h2>添加Rabbit数据源</h2>
+  </div>
+  <div class="crumbs"><a href="mqRabbitDataSourceList.htm">Rabbit数据源配置</a>&nbsp;&nbsp;>&nbsp;&nbsp;<a href="addRabbitMqDataSource.htm">添加Rabbit数据源</a></div>
+ 
+ <form name="addMqSourceForm" method="post" enctype="multipart/form-data">
+	$csrfToken.hiddenField
+	<input type="hidden" name="action" value="mq_rabbit_data_media_source_action"/>
+	<input type="hidden" name="event_submit_do_add" value="1" />
+ <div class="setting_box">
+	#set ($mqDataMediaSourceGroup = $form.mqRabbitDataMediaSourceInfo.defaultInstance)
+    <table cellpadding="0" cellspacing="0" class="setting_otter">
+		<span class="red">#addDataSourceMessage ($mqDataMediaSourceGroup.formMqDataMediaSourceError)</span>
+      <tr> 
+        <th width="300">Rabbit数据源名字：</th>
+        <td width="329">
+			<input type="text" name="$mqDataMediaSourceGroup.name.key"
+                   value="$!mqDataMediaSourceGroup.name.value" class="setting_input"/><span class="red">*</span>
+			<br />
+			<span class="red">#addDataSourceMessage ($mqDataMediaSourceGroup.name)</span>
+		</td>
+      </tr>
+      <tr> 
+        <th>类型：</th>
+        <td>
+            <select id="sourceType" name="$mqDataMediaSourceGroup.type.key" onchange="changeform();" >
+            <option value="RABBIT">RABBIT</option>
+			</select><span class="red">*</span>
+        </td>
+      </tr>
+    <tr>
+        <th>用户名：</th>
+        <td>
+            <input id="sourceUserName" name="$mqDataMediaSourceGroup.userName.key" value="$!mqDataMediaSourceGroup.userName.value" type="text" class="setting_input"/><span class="red">*</span>
+            <br />
+            <span class="red">#addDataSourceMessage ($mqDataMediaSourceGroup.userName)</span>
+        </td>
+    </tr>
+    <tr>
+        <th>密码：</th>
+        <td>
+            <input id="sourcePassword" name="$mqDataMediaSourceGroup.password.key" type="password" class="setting_input"/><span class="red">*</span>
+            <br />
+            <span class="red">#addDataSourceMessage ($mqDataMediaSourceGroup.password)</span>
+        </td>
+    </tr>
+        <tr>
+            <th>IP地址：</th>
+            <td>
+                <input id="sourcePassword" name="$mqDataMediaSourceGroup.host.key" value="$mqDataMediaSourceGroup.host.value"  class="setting_input"/><span class="red">*</span>
+                <br />
+                <span class="red">#addDataSourceMessage ($mqDataMediaSourceGroup.host)</span>
+            </td>
+        </tr>
+        <tr>
+            <th>端口：</th>
+            <td>
+                <input id="sourcePassword" name="$mqDataMediaSourceGroup.port.key" value="$mqDataMediaSourceGroup.port.value"  class="setting_input"/><span class="red">*</span>
+                <br />
+                <span class="red">#addDataSourceMessage ($mqDataMediaSourceGroup.port)</span>
+            </td>
+        </tr>
+        <tr>
+            <th>虚拟地址：</th>
+            <td>
+                <input id="sourcePassword" name="$mqDataMediaSourceGroup.vhost.key" value="$mqDataMediaSourceGroup.vhost.value"  class="setting_input"/><span class="red">*</span>
+                <br />
+                <span class="red">#addDataSourceMessage ($mqDataMediaSourceGroup.vhost)</span>
+            </td>
+        </tr>
+
+
+
+      
+    </table>
+          
+ </div>
+  <div class="btn"><a href="javascript:document.addMqSourceForm.submit();">保存</a></div>
+ </form>
+</div>

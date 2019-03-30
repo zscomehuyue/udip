@@ -1,0 +1,370 @@
+curl -H 'Content-Type:application/json; charset=utf-8'     -XPOST   "http://192.168.13.188:9200/rgse_1/udip/_mapping?pretty"  -d   '{
+"udip" : {
+"properties": {
+"clase_cityId": {
+"type": "keyword"
+},
+"clase_id": {
+"type": "keyword"
+},
+"clase_stagesName": {
+"type": "text",
+"fields": {
+"keyword": {
+"type": "keyword",
+"ignore_above": 256
+}
+}
+},
+"clase_stagesNum": {
+"type": "long"
+},
+"clase_updateTime": {
+"type": "date"
+},
+"clazz_areaId": {
+"type": "keyword"
+},
+"clazz_areaName": {
+"type": "text",
+"fields": {
+"keyword": {
+"type": "keyword",
+"ignore_above": 256
+}
+}
+},
+"clazz_bizType": {
+"type": "integer"
+},
+"clazz_cityId": {
+"type": "keyword"
+},
+"clazz_classCount": {
+"type": "long"
+},
+"clazz_classTimeTypeId": {
+"type" : "keyword"
+},
+"clazz_classType": {
+"type": "integer"
+},
+"clazz_classdateName": {
+"type": "text",
+"fields" : {
+"keyword": {
+"type": "keyword",
+"ignore_above" : 256
+}
+}
+},
+"clazz_classroomName": {
+"type" : "text",
+"fields": {
+"keyword": {
+"type" : "keyword",
+"ignore_above": 256
+}
+}
+},
+"clazz_classtimeIds": {
+"type": "keyword"
+},
+"clazz_classtimeNames": {
+"type": "text",
+"fields": {
+"keyword": {
+"type": "keyword",
+"ignore_above": 256
+}
+}
+},
+"clazz_classtimeTimePeriod": {
+"type": "text",
+"fields" : {
+"keyword": {
+"type": "keyword",
+"ignore_above" : 256
+}
+}
+},
+"clazz_coursewareSend": {
+"type" : "long"
+},
+"clazz_createType": {
+"type": "integer"
+},
+"clazz_endDate": {
+"type": "date"
+},
+"clazz_gradeId": {
+"type": "keyword"
+},
+"clazz_gradeName": {
+"type": "text",
+"fields": {
+"keyword": {
+"type": "keyword",
+"ignore_above": 256
+}
+}
+},
+"clazz_gradeTypeId": {
+"type": "keyword"
+},
+"clazz_gradeTypeName": {
+"type": "text",
+"fields": {
+"keyword": {
+"type": "keyword",
+"ignore_above": 256
+}
+}
+},
+"clazz_id": {
+"type": "keyword"
+},
+"clazz_isClose": {
+"type": "long"
+},
+"clazz_isDelete": {
+"type": "long"
+},
+"clazz_isDisplayFront": {
+"type": "long"
+},
+"clazz_isDisplayTeacher": {
+"type" : "long"
+},
+"clazz_isDoubleTeacherLiveClass": {
+"type": "long"
+},
+"clazz_isHidden": {
+"type": "long"
+},
+"clazz_isLiveClass": {
+"type": "long"
+},
+"clazz_isSchooltest": {
+"type": "long"
+},
+"clazz_isTest": {
+"type" : "long"
+},
+"clazz_levelId": {
+"type": "keyword"
+},
+"clazz_levelName": {
+"type": "text",
+"fields" : {
+"keyword": {
+"type": "keyword",
+"ignore_above" : 256
+}
+}
+},
+"clazz_maxPersons": {
+"type" : "long"
+},
+"clazz_name": {
+"type": "text",
+"fields": {
+"keyword": {
+"type": "keyword",
+"ignore_above": 256
+}
+}
+},
+"clazz_passedCount": {
+"type": "long"
+},
+"clazz_price": {
+"type" : "float"
+},
+"clazz_servicecenterId": {
+"type": "keyword"
+},
+"clazz_servicecenterName": {
+"type": "text",
+"fields" : {
+"keyword": {
+"type": "keyword",
+"ignore_above" : 256
+}
+}
+},
+"clazz_startDate": {
+"type" : "date"
+},
+"clazz_subjectLongValue": {
+"type": "keyword"
+},
+"clazz_subjectNames": {
+"type": "text",
+"fields" : {
+"keyword": {
+"type": "keyword",
+"ignore_above" : 256
+}
+}
+},
+"clazz_teacherIds": {
+"type" : "keyword"
+},
+"clazz_teacherNames": {
+"type": "text",
+"fields": {
+"keyword": {
+"type": "keyword",
+"ignore_above": 256
+}
+}
+},
+"clazz_termId": {
+"type": "keyword"
+},
+"clazz_termName": {
+"type" : "text",
+"fields": {
+"keyword": {
+"type" : "keyword",
+"ignore_above": 256
+}
+}
+},
+"clazz_tutorId": {
+"type": "keyword"
+},
+"clazz_tutorRealName": {
+"type": "text",
+"fields": {
+"keyword": {
+"type": "keyword",
+"ignore_above": 256
+}
+}
+},
+"clazz_venueId": {
+"type": "keyword"
+},
+"clazz_venueName": {
+"type": "keyword"
+},
+"clazz_year": {
+"type": "keyword"
+},
+"esDate": {
+"type" : "keyword"
+},
+"esDateTime": {
+"type": "long"
+},
+"rgse_addCurriculumCount": {
+"type": "long"
+},
+"rgse_cityId": {
+"type": "keyword"
+},
+"rgse_classId": {
+"type": "keyword"
+},
+"rgse_classStageId": {
+"type" : "keyword"
+},
+"classStageName": {
+"type": "keyword"
+},
+"rgse_curriculumCount": {
+"type": "long"
+},
+"rgse_deleted": {
+"type": "long"
+},
+"rgse_id": {
+"type": "keyword"
+},
+"rgse_modifyTime": {
+"type": "date"
+},
+"rgse_payTime": {
+"type": "date"
+},
+"rgse_studentId": {
+"type": "keyword"
+},
+"stu_cityId": {
+"type": "keyword"
+},
+"stu_id": {
+"type": "keyword"
+},
+"stu_loginname": {
+"type": "keyword"
+},
+"stu_name": {
+"type": "text",
+"fields": {
+"keyword": {
+"type": "keyword",
+"ignore_above": 256
+}
+}
+},
+"stu_uid": {
+"type": "long"
+},
+"esStatus": {
+"type": "integer"
+},
+"rgse_payed": {
+"type": "integer"
+},
+"rg_way": {
+"type": "integer"
+},
+"rg_payEnddate": {
+"type": "date"
+},
+"rg_isNewstu": {
+"type": "integer"
+},
+"rg_createDate": {
+"type" : "date"
+},
+"rgse_registId": {
+"type": "text",
+"fields": {
+"keyword": {
+"type": "keyword",
+"ignore_above": 256
+}
+}
+},
+"rg_remark": {
+"type": "text",
+"fields": {
+"keyword": {
+"type": "keyword",
+"ignore_above": 256
+}
+}
+}, "clazz_classChangeName": {
+"type": "text",
+"fields" : {
+"keyword": {
+"type": "keyword",
+"ignore_above" : 256
+}
+}
+}, "rg_createId": {
+"type" : "text",
+"fields": {
+"keyword": {
+"type" : "keyword",
+"ignore_above": 256
+}
+}
+}
+}
+}
+}'

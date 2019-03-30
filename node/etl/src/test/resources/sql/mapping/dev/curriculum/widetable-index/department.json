@@ -1,0 +1,30 @@
+curl -H 'Content-Type:application/json; charset=utf-8'     -XPOST   "http://10.200.0.109:9200/department/udip/_mapping?pretty"  -d   '{
+      "udip" : {
+        "properties" : {
+          "department_cityId" : {
+            "type" : "keyword"
+          },
+          "department_districtId" : {
+            "type" : "keyword"
+          },
+          "department_id" : {
+            "type" : "keyword"
+          },
+          "department_name" : {
+            "type" : "text",
+            "fields" : {
+              "keyword" : {
+                "type" : "keyword",
+                "ignore_above" : 256
+              }
+            }
+          },
+          "esDate" : {
+            "type" : "keyword"
+          },
+          "esDateTime" : {
+            "type" : "long"
+          }
+        }
+      }
+    }'

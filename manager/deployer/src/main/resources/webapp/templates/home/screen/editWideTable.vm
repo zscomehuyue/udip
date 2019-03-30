@@ -1,0 +1,152 @@
+$control.setTemplate("home:navigation.vm")
+<script type='text/javascript' src='dwr/interface/Hello.js'></script>  
+<script type='text/javascript' src='dwr/engine.js'></script>  
+<script type='text/javascript' src='dwr/util.js'></script>  
+<script type='text/javascript' src='js/dbCheck.js'></script>
+<script language="javascript">
+<!--
+	changeNav("datamedia");
+
+//-->
+
+
+function changeKeyword(id, name, local) {
+    if(local == 'main'){
+        if( document.getElementById("mainTableId") && document.getElementById("mainTableName")){
+            document.getElementById('mainTableId').value = id;
+            document.getElementById('mainTableName').value = name;
+        }
+    }else if(local == 'slave'){
+        if( document.getElementById("slaveTableId") && document.getElementById("slaveTableName")){
+            document.getElementById('slaveTableId').value = id;
+            document.getElementById('slaveTableName').value = name;
+        }
+    }
+}
+
+
+function changeKeywordByEs(id, name) {
+    if( document.getElementById("targetName") && document.getElementById("targetId")){
+        document.getElementById('targetId').value = id;
+        document.getElementById('targetName').value = name;
+    }
+}
+
+
+</script>
+#macro (addWideTableMessage $field)
+    #if (!$field.valid) $field.message #end
+#end
+
+<div class="main">
+  <div class="title"> 
+    <h2>添加宽表</h2>
+  </div>
+  <div class="crumbs"><a href="wideTableList.htm">宽表配置</a>&nbsp;&nbsp;>&nbsp;&nbsp;<a href="addWideTable.htm">添加宽表</a></div>
+ 
+ <form name="editWideTableForm" method="post" enctype="multipart/form-data">
+	$csrfToken.hiddenField
+	<input type="hidden" name="action" value="wide_table_action"/>
+	<input type="hidden" name="event_submit_do_edit" value="1" />
+
+ <div class="setting_box">
+	#set ($wideTableInfoGroup = $form.wideTableInfo.defaultInstance)
+     <input type="hidden" name="id" value="$wideTable.id" />
+     <input type="hidden" name="$wideTableInfoGroup.id.key" value="$wideTable.id" />
+    <table cellpadding="0" cellspacing="0" class="setting_otter">
+		<span class="red">#addWideTableMessage ($wideTableInfoGroup.formWideTableInfoError)</span>
+      <tr> 
+        <th width="300">宽表名称：</th>
+        <td width="329">
+			<input type="text" name="$wideTableInfoGroup.wideTableName.key" value="$wideTable.wideTableName" class="setting_input"/><span class="red">*</span>
+			<br />
+			<span class="red">#addWideTableMessage ($wideTableInfoGroup.wideTableName)</span>
+		</td>
+      </tr>
+      <tr> 
+        <th>索引名称：</th>
+          <td>
+              <input id="targetName" type="text" name="$wideTableInfoGroup.targetName.key" value="$wideTable.target.namespace" class="setting_input" readonly />
+              <input id="targetId" name="$wideTableInfoGroup.targetId.key" value="$wideTable.target.id" type="hidden" class="setting_input"  />
+              <input type="button" value="查找数据表" onclick="window.open('selectEsDataMedia.htm?local=target', 'selectEsTargerDataMedia')"><span class="red">*</span>
+              <br />
+              <span class="red">#addWideTableMessage ($wideTableInfoGroup.targetId)</span>
+          </td>
+      </tr>
+      <tr> 
+        <th>主表：</th>
+          <td>
+              <input id="mainTableName" type="text" name="$wideTableInfoGroup.mainTableName.key" value="$wideTable.mainTable.name" class="setting_input" readonly />
+              <input id="mainTableId" name="$wideTableInfoGroup.mainTableId.key" value="$wideTable.mainTable.id" type="hidden" class="setting_input"  />
+              <input type="button" value="查找数据表" onclick="window.open('selectDataMedia.htm?local=main', 'selectSourceDataMedia')"><span class="red">*</span>
+              <br />
+              <span class="red">#addWideTableMessage ($wideTableInfoGroup.mainTableId)</span>
+          </td>
+      </tr>
+	  <tr> 
+        <th>主表主键名称：</th>
+        <td>
+			<input id="mainTablePkIdName" name="$wideTableInfoGroup.mainTablePkIdName.key" value="$wideTable.mainTablePkIdName" class="setting_input"/><span class="red">*</span>
+			<br />
+			<span class="red">#addWideTableMessage ($wideTableInfoGroup.mainTablePkIdName)</span>
+		</td>
+      </tr>
+	  <tr> 
+        <th>从表：</th>
+          <td>
+              <input id="slaveTableName" type="text" name="$wideTableInfoGroup.slaveTableName.key" value="$wideTable.slaveTable.name" class="setting_input" readonly />
+              <input id="slaveTableId" name="$wideTableInfoGroup.slaveTableId.key" value="$wideTable.slaveTable.id" type="hidden" class="setting_input"  />
+              <input type="button" value="查找数据表" onclick="window.open('selectDataMedia.htm?local=slave', 'selectSourceDataMedia')"><span class="red">*</span>
+              <br />
+              <span class="red">#addWideTableMessage ($wideTableInfoGroup.slaveTableId)</span>
+          </td>
+      </tr>
+        <tr>
+            <th>从表主键名称：</th>
+            <td>
+                <input id="slaveTableFkIdName" name="$wideTableInfoGroup.slaveTablePkIdName.key" value="$!wideTable.slaveTablePkIdName" class="setting_input"/><span class="red">*</span>
+                <br />
+                <span class="red">#addWideTableMessage ($wideTableInfoGroup.slaveTablePkIdName)</span>
+            </td>
+        </tr>
+        <tr>
+            <th>主键关联键名称：</th>
+            <td>
+                <input id="mainTableFkIdName" name="$wideTableInfoGroup.mainTableFkIdName.key" value="$wideTable.mainTableFkIdName" type="text" class="setting_input"/><span class="red">*</span>
+                <br />
+                <span class="red">#addWideTableMessage ($wideTableInfoGroup.mainTableFkIdName)</span>
+            </td>
+        </tr>
+        <tr>
+            <th>从表关联键名称：</th>
+            <td>
+                <input id="mainTableFkIdName" name="$wideTableInfoGroup.slaveTableFkIdName.key" value="$wideTable.slaveTableFkIdName" type="text" class="setting_input"/><span class="red">*</span>
+                <br />
+                <span class="red">#addWideTableMessage ($wideTableInfoGroup.slaveTableFkIdName)</span>
+            </td>
+        </tr>
+        <tr>
+            <th>从表对应主表主键名称：</th>
+            <td>
+                <input id="slaveMainTablePkIdName" name="$wideTableInfoGroup.slaveMainTablePkIdName.key" value="$!wideTable.slaveMainTablePkIdName" type="text" class="setting_input"  />
+                <br />
+                <span class="red">#addWideTableMessage ($wideTableInfoGroup.slaveMainTablePkIdName)</span>
+            </td>
+        </tr>
+        <tr>
+            <th>描述：</th>
+            <td>
+                <input id="description" name="$wideTableInfoGroup.description.key" value="$!wideTable.description" type="text" class="setting_input"/>
+                <br />
+                <span class="red">#addWideTableMessage ($wideTableInfoGroup.description)</span>
+            </td>
+        </tr>
+
+
+      
+    </table>
+          
+ </div>
+  <div class="btn"><a href="javascript:document.editWideTableForm.submit();">保存</a></div>
+ </form>
+</div>

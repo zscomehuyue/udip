@@ -1,0 +1,187 @@
+$control.setTemplate("home:navigation.vm")
+#set($user = $rundata.request.session.getAttribute("managerUser"))
+<script type="text/javascript" src="js/trcolor.js"></script>
+<script type="text/javascript" src="js/jquery-1.4.2.min.js"></script> 
+<script type="text/javascript" src="js/jquery.simplemodal-1.4.js"></script> 
+<script language="javascript">
+	changeNav("repair");
+
+</script>
+
+<!--页面主体-->
+<div class="main">
+   
+  <div class="title"> 
+    <h2>修复管理</h2>
+  </div>
+   <div class="crumbs"><a href="checkDataLogList.htm">数据检查日志</a>
+       <span class="red">提示:数据修复需要Pipeline开启自由门功能以及在源数据中创建自由门相关数据库表</span>
+   </div>
+   <!--分页表单-->
+   <form id="pageform" name="pageform" action="$homeModule.setTarget('checkDataLogList.vm')" method="post">
+    	<input type="hidden" id="pageIndex" name="pageIndex" value=""/>
+		<input type="hidden" id="searchKey" name="searchKey" value="$!searchKey"/>
+		<input type="hidden" id="sourceSchema" name="sourceSchema" value="$!sourceSchema"/>
+		<input type="hidden" id="targetSchema" name="targetSchema" value="$!targetSchema"/>
+   </form>
+   <!--DataMedia搜索-->
+   <div class="search_o" style="width: 1500px">
+		<form name="search_data" action="checkDataLogList.htm" method="post">
+			##$csrfToken.hiddenField
+			<div class="search_input">
+				<input name="searchKey" type="text" value="请输入关键字"  onfocus="if(this.value == '请输入关键字') {this.value='';}" onblur="if(this.value == '') {this.value = '请输入关键字';}" />
+			</div>
+			<span style="float: left;margin-left: 5px;font-weight: bolder;font-size: larger;margin-top: 4px;">源Schema列表</span>
+			<select name="sourceSchema" style="float: left;margin-left: 5px;margin-right: 5px;height: 25px;margin-top: 2px;">
+				<option></option>
+				#foreach($key in $sourceSchemaList)
+					#if($!sourceSchema == $!key)
+						<option selected="selected" value="$!key">$!key</option>
+					#else
+						<option value="$!key">$!key</option>
+					#end
+				#end
+			</select>
+			<span style="float: left;margin-left: 5px;font-weight: bolder;font-size: larger;margin-top: 4px;">目标Schema列表</span>
+			<select name="targetSchema" style="float: left;margin-left: 5px;margin-right: 5px;height: 25px;margin-top: 2px;">
+				<option></option>
+				#foreach($key in $targetSchemaList)
+					#if($!targetSchema == $!key)
+						<option selected="selected" value="$!key">$!key</option>
+					#else
+						<option value="$!key">$!key</option>
+					#end
+				#end
+			</select>
+
+			<div class="search_btn"><a href="javascript:document.search_data.submit();"><img src="images/search_btn.png" width="39" height="31" /></a></div>
+        </form>
+   </div>
+	<span class="red">$!msg</span>
+   <!--列表-->
+     
+  <table border="0" cellspacing="0" cellpadding="0" class="list changecolor_w" >
+    <tr> 
+      <th>序号</th>
+	  <th title="ChannelId">CID</th>
+	  <th title="PipelineId">PID</th>
+	  <th>源数据源名称</th>
+	  <th>源数据库名称</th>
+	  <th>源表名称</th>
+	  <th>目标数据源名称</th>
+	  <th>目标数据库名称</th>
+	  <th>目标表名称</th>
+	  <th>检查开始时间</th>
+	  <th>检查结束时间</th>
+##	  <th>创建时间</th>
+##	  <th>修改时间</th>
+	  <th>状态</th>
+	  <th>操作</th>
+    </tr>
+	#foreach ($dataCheckDo in $dataCheckDoLs)
+	
+    <tr> 
+      <td width="3%">$!dataCheckDo.id</td>
+	  <td width="2%">$!dataCheckDo.channelId</td>
+	  <td width="2%">$!dataCheckDo.pipelineId</td>
+      <td>$!dataCheckDo.checkSourceName</td>
+      <td>$!dataCheckDo.checkSourceSchema</td>
+      <td>$!dataCheckDo.checkSourceTable</td>
+      <td>$!dataCheckDo.checkTargetName</td>
+      <td>$!dataCheckDo.checkTargetSchema</td>
+      <td>$!dataCheckDo.checkTargetTable</td>
+      <td>#if($!dataCheckDo.checkBeginDate)$!numberFormat.format($dataCheckDo.checkBeginDate) #else null #end</td>
+      <td>#if($!dataCheckDo.checkEndDate)$!numberFormat.format($dataCheckDo.checkEndDate) #else null #end</td>
+##	  <td>#if($!dataCheckDo.createDate)$!numberFormat.format($dataCheckDo.createDate) #else null #end </td>
+##	  <td>#if($!dataCheckDo.updateDate)$!numberFormat.format($dataCheckDo.updateDate) #else null #end </td>
+		<td>#if($!dataCheckDo.isStart == 0)<span style="color: forestgreen;font-weight: bold">运行</span> #else <span style="color:red;font-weight: bold ">停止</span> #end </td>
+	<td>
+		#if($user.authorizeType.isAdmin())
+			<a href="$homeModule.setTarget("editCheckDataLog.vm").addQueryData("id", $!dataCheckDo.id).addQueryData("searchKey", $!searchKey).addQueryData("sourceSchema", $!sourceSchema).addQueryData("targetSchema", $!targetSchema).addQueryData("pageIndex", $!pageIndex)">
+				<img src="images/ico_edit.png" alt="" width="13" height="13" />
+				<span class="ico_font">编辑</span></a>
+            <span class="ico_line">|</span>
+			#set($redoZkLink = $homeModule.setTarget("checkDataLogList.vm").addQueryData("id", $!dataCheckDo.id).addQueryData("operation", "check").addQueryData("searchKey", $!searchKey).addQueryData("sourceSchema", $!sourceSchema).addQueryData("targetSchema", $!targetSchema).addQueryData("pageIndex", $!pageIndex))
+            <a href="javascript:if(confirm('确实要运行数据检查吗?'))location='$redoZkLink'">
+                <img src="images/ico_edit.png" alt="" width="13" height="13" />
+                <span class="ico_font">数据检查</span></a>
+            <span class="ico_line">|</span>
+			#set($redoZkLink = $homeModule.setTarget("checkDataLogList.vm").addQueryData("id", $!dataCheckDo.id).addQueryData("operation", "repair").addQueryData("searchKey", $!searchKey).addQueryData("sourceSchema", $!sourceSchema).addQueryData("targetSchema", $!targetSchema).addQueryData("pageIndex", $!pageIndex))
+            <a href="javascript:if(confirm('确实要运行数据修复吗?'))location='$redoZkLink'">
+                <img src="images/ico_edit.png" alt="" width="13" height="13" />
+                <span class="ico_font">全部修复</span></a>
+            <span class="ico_line">|</span>
+			#set($redoZkLink = $homeModule.setTarget("checkDataLogList.vm").addQueryData("id", $!dataCheckDo.id).addQueryData("operation", "subRepair").addQueryData("searchKey", $!searchKey).addQueryData("sourceSchema", $!sourceSchema).addQueryData("targetSchema", $!targetSchema).addQueryData("pageIndex", $!pageIndex))
+            <a href="javascript:if(confirm('确实要运行数据修复吗?'))location='$redoZkLink'">
+                <img src="images/ico_edit.png" alt="" width="13" height="13" />
+                <span class="ico_font">数据修补</span></a>
+            <span class="ico_line">|</span>
+			#set($redoZkLink = $homeModule.setTarget("checkDataLogList.vm").addQueryData("id", $!dataCheckDo.id).addQueryData("operation", "forceRepair").addQueryData("searchKey", $!searchKey).addQueryData("sourceSchema", $!sourceSchema).addQueryData("targetSchema", $!targetSchema).addQueryData("pageIndex", $!pageIndex))
+            <a href="javascript:if(confirm('确实要运行数据修复吗?'))location='$redoZkLink'">
+                <img src="images/ico_edit.png" alt="" width="13" height="13" />
+                <span class="ico_font">强制同步</span></a>
+            <span class="ico_line">|</span>
+			#set($redoZkLink = $homeModule.setTarget("checkDataLogList.vm").addQueryData("id", $!dataCheckDo.id).addQueryData("operation", "checkFieldAndRepair").addQueryData("searchKey", $!searchKey).addQueryData("sourceSchema", $!sourceSchema).addQueryData("targetSchema", $!targetSchema).addQueryData("pageIndex", $!pageIndex))
+            <a href="javascript:if(confirm('确实要运行数据修复吗?'))location='$redoZkLink'">
+                <img src="images/ico_edit.png" alt="" width="13" height="13" />
+                <span class="ico_font">字段修复</span></a>
+            <span class="ico_line">|</span>
+			#set($redoZkLink = $homeModule.setTarget("checkDataLogList.vm").addQueryData("id", $!dataCheckDo.id).addQueryData("operation", "isStart").addQueryData("searchKey", $!searchKey).addQueryData("sourceSchema", $!sourceSchema).addQueryData("targetSchema", $!targetSchema).addQueryData("pageIndex", $!pageIndex))
+            <a href="javascript:if(confirm('确实要操作吗?'))location='$redoZkLink'">
+                <img src="images/ico_edit.png" alt="" width="13" height="13" />
+                <span class="ico_font">#if($!dataCheckDo.isStart == 0)停止 #else 运行 #end</span></a>
+            <span class="ico_line">|</span>
+			#set ($removeURL = $homeModule.setAction("checkDataInfoAction").addQueryData("id", $!dataCheckDo.id).addQueryData("pageIndex", $!paginator.page).addQueryData("searchKey", $!searchKey).addQueryData("sourceSchema", $!sourceSchema).addQueryData("targetSchema", $!targetSchema).addQueryData("pageIndex", $!pageIndex).addQueryData("eventSubmitDoDelete", "true"))
+            <a href="javascript:if(confirm('确实要删除吗?'))location='$removeURL'" class="link del"><img src="images/ico_del.png" width="9" height="9" /><span class="ico_font">删除</span></a></td>
+
+
+		#end
+
+	</td>
+    </tr>
+    #end
+  </table>
+
+  
+     
+     <!--分页-->
+     <div class="page">共$paginator.items条数据&nbsp;&nbsp;第$paginator.page页/共$paginator.pages页&nbsp;&nbsp; 
+       
+	   #if($paginator.page == 1)
+            <font color="999999">首页</font>
+	   #else
+			<a href="#" class="prev" onclick="pageNavigation(this,1)">首页</a>
+	   #end
+	   
+	   #if($paginator.page > 1)
+			#set($pre_page = $paginator.page - 1)
+				<a href="#" class="prev" onclick="pageNavigation(this,$pre_page)">上一页</a>
+	   #else
+            <font color="999999">上一页</font>
+	   #end
+	   ##分页下标
+	   #set($counts_keys = $paginator.getSlider(7))
+	   #foreach( $thisPage in $counts_keys)
+			#if( $thisPage == $paginator.page)
+                <b>$thisPage</b>
+			#else
+				#if($thisPage != 0)
+					<a href="#" class="num" onclick="pageNavigation(this,$thisPage)">$thisPage</a> 
+				#end
+			#end
+	   #end
+	   
+	   #if($paginator.page < $paginator.pages)
+			#set($next_page = $paginator.page + 1)
+				<a href="#" class="prev" onclick="pageNavigation(this,$next_page)">下一页</a>
+	   #else
+            <font color="999999">下一页</font>
+	   #end
+	   
+	   #if($paginator.page == $paginator.pages)
+            <font color="999999">末页</font>
+	   #else
+			<a href="#" class="prev" onclick="pageNavigation(this,$paginator.pages)">末页</a>
+	   #end
+     </div>     
+</div>

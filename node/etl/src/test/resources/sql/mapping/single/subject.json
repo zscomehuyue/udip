@@ -1,0 +1,126 @@
+curl -H 'Content-Type:application/json; charset=utf-8'     -XPOST   "http://10.200.0.109:9200/subject/udip/_mapping?pretty"  -d   '{
+      "udip" : {
+        "properties" : {
+          "classlevel_cityId" : {
+            "type" : "keyword"
+          },
+          "classlevel_createDate" : {
+            "type" : "date"
+          },
+          "classlevel_createrId" : {
+            "type" : "keyword"
+          },
+          "classlevel_degree" : {
+            "type" : "float"
+          },
+          "classlevel_deleted" : {
+            "type" : "long"
+          },
+          "classlevel_disable" : {
+            "type" : "long"
+          },
+          "classlevel_displayName" : {
+            "type" : "text",
+            "fields" : {
+              "keyword" : {
+                "type" : "keyword",
+                "ignore_above" : 256
+              }
+            }
+          },
+          "classlevel_id" : {
+            "type" : "keyword"
+          },
+          "classlevel_isLeaf" : {
+            "type" : "long"
+          },
+          "classlevel_isMobi" : {
+            "type" : "long"
+          },
+          "classlevel_modifyDate" : {
+            "type" : "date"
+          },
+          "classlevel_modifyId" : {
+            "type" : "keyword"
+          },
+          "classlevel_name" : {
+            "type" : "text",
+            "fields" : {
+              "keyword" : {
+                "type" : "keyword",
+                "ignore_above" : 256
+              }
+            }
+          },
+          "classlevel_order" : {
+            "type" : "long"
+          },
+          "classlevel_parentId" : {
+            "type" : "keyword"
+          },
+          "classlevel_status" : {
+            "type" : "long"
+          },
+          "classlevel_type" : {
+            "type" : "long"
+          },
+          "esDate" : {
+            "type" : "keyword"
+          },
+          "esDateTime" : {
+            "type" : "long"
+          },
+          "subject_allowSamesubject" : {
+            "type" : "long"
+          },
+          "subject_cityId" : {
+            "type" : "keyword"
+          },
+          "subject_createDate" : {
+            "type" : "date"
+          },
+          "subject_createrId" : {
+            "type" : "keyword"
+          },
+          "subject_id" : {
+            "type" : "keyword"
+          },
+          "subject_isShowSer" : {
+            "type" : "long"
+          },
+          "subject_isShowStu" : {
+            "type" : "long"
+          },
+          "subject_isShowTea" : {
+            "type" : "long"
+          },
+          "subject_isdeleted" : {
+            "type" : "long"
+          },
+          "subject_longValue" : {
+            "type" : "long"
+          },
+          "subject_modifyDate" : {
+            "type" : "date"
+          },
+          "subject_modifyId" : {
+            "type" : "keyword"
+          },
+          "subject_name" : {
+            "type" : "text",
+            "fields" : {
+              "keyword" : {
+                "type" : "keyword",
+                "ignore_above" : 256
+              }
+            }
+          },
+          "subject_order" : {
+            "type" : "long"
+          },
+          "subject_status" : {
+            "type" : "long"
+          }
+        }
+      }
+    }'

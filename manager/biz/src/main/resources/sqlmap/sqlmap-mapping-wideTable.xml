@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+    <!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"  
+       "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="com.alibaba.otter.manager.biz.config.widetable.dal.dataobject.WideTableDO">
+	<typeAlias alias="WIDE_TABLE"
+		type="com.alibaba.otter.manager.biz.config.widetable.dal.dataobject.WideTableDO" />
+
+	<resultMap id="wideTableResult" class="WIDE_TABLE">
+		<result property="id" column="ID" />
+		<result property="wideTableName" column="WIDE_TABLE_NAME" />
+		<result property="mainTableId" column="MAIN_TABLE_ID" />
+		<result property="slaveTableId" column="SLAVE_TABLE_ID" />
+		<result property="mainTablePkIdName" column="MAIN_TABLE_PKID_NAME" />
+		<result property="slaveTablePkIdName" column="SLAVE_TABLE_PKID_NAME" />
+		<result property="slaveTableFkIdName" column="SLAVE_TABLE_FKID_NAME" />
+		<result property="mainTableFkIdName" column="REAL_TABLE_FKID_NAME" />
+		<!--<result property="slaveMainTablePkIdName" column="REAL_FKID_TABLE_ID" />-->
+		<result property="slaveMainTablePkIdName" column="SLAVE_MAIN_FKID_NAME" />
+		<result property="targetId" column="TARGET_ID" />
+		<result property="description" column="DESCRIPTION" />
+		<result property="created" column="CREATED" />
+		<result property="modified" column="MODIFIED" />
+	</resultMap>
+	
+	<!-- all columns -->
+	<sql id="allwideTableColumns">ID,WIDE_TABLE_NAME,SLAVE_TABLE_FKID_NAME,SLAVE_TABLE_PKID_NAME,MAIN_TABLE_ID,MAIN_TABLE_PKID_NAME,SLAVE_TABLE_ID,SLAVE_TABLE_PKID_NAME,REAL_TABLE_FKID_NAME,SLAVE_MAIN_FKID_NAME,TARGET_ID,DESCRIPTION,CREATED,MODIFIED</sql>
+
+
+	<insert id="insertWideTable" parameterClass="WIDE_TABLE">
+		insert into WIDE_TABLE
+		(WIDE_TABLE_NAME
+		,MAIN_TABLE_ID
+		,MAIN_TABLE_PKID_NAME
+		,SLAVE_TABLE_ID
+		,REAL_TABLE_FKID_NAME
+		,SLAVE_MAIN_FKID_NAME
+		,TARGET_ID
+		,DESCRIPTION
+		,SLAVE_TABLE_PKID_NAME
+		,SLAVE_TABLE_FKID_NAME
+		,CREATED,MODIFIED)
+		VALUES
+		(#wideTableName#,#mainTableId#,#mainTablePkIdName#,#slaveTableId#,
+		#mainTableFkIdName#,#slaveMainTablePkIdName#,#targetId#,#description#,#slaveTablePkIdName#,#slaveTableFkIdName#,
+		now(),now())
+		<selectKey keyProperty="id" resultClass="long">
+			select last_insert_id()
+		</selectKey>
+	</insert>
+
+
+	<update id="updateWideTable" parameterClass="WIDE_TABLE"><![CDATA[
+		update WIDE_TABLE
+		set
+		WIDE_TABLE_NAME=#wideTableName#,
+		MAIN_TABLE_ID=#mainTableId#,
+		MAIN_TABLE_PKID_NAME=#mainTablePkIdName#,
+		SLAVE_TABLE_FKID_NAME=#slaveTableFkIdName#,
+		SLAVE_TABLE_ID=#slaveTableId#,
+		SLAVE_TABLE_PKID_NAME=#slaveTablePkIdName#,
+		REAL_TABLE_FKID_NAME=#mainTableFkIdName#,
+		SLAVE_MAIN_FKID_NAME=#slaveMainTablePkIdName#,
+		TARGET_ID=#targetId#,
+		DESCRIPTION=#description#,
+		MODIFIED=now()
+		WHERE ID = #id#
+	]]></update>
+
+
+	<select id="listByTargetIdAndTableId" resultMap="wideTableResult" >
+		select
+		<include refid="allwideTableColumns" />
+		from WIDE_TABLE
+		<dynamic prepend="where">
+			1=1
+			<isGreaterThan property="tableId" compareValue="0">
+				and (MAIN_TABLE_ID=#tableId# or SLAVE_TABLE_ID=#tableId#)
+			</isGreaterThan>
+			<isGreaterThan property="TARGET_ID" compareValue="0" >
+				and TARGET_ID = #targetId#
+			</isGreaterThan>
+
+		</dynamic>
+
+		ORDER BY ID ASC
+
+	</select>
+
+
+	<select id="getWideTableCount" resultClass="Integer">
+		select count(*) from WIDE_TABLE
+		<dynamic prepend="where">
+			<isNotEmpty property="searchKey">
+				WIDE_TABLE_NAME like concat('%',replace(#searchKey#,'_','\_'),'%')
+				or ID like concat('%',replace(#searchKey#,'_','\_'),'%')
+				or MAIN_TABLE_PKID_NAME like concat('%',replace(#searchKey#,'_','\_'),'%')
+				or REAL_TABLE_FKID_NAME like concat('%',replace(#searchKey#,'_','\_'),'%')
+			</isNotEmpty>
+		</dynamic>
+	</select>
+
+
+	<select id="listWideTablesWithCondition" resultMap="wideTableResult">
+		select
+		<include refid="allwideTableColumns" />
+		from WIDE_TABLE
+		<dynamic prepend="where">
+			1=1
+			<isNotEmpty property="searchKey">
+				and WIDE_TABLE_NAME like concat('%',replace(#searchKey#,'_','\_'),'%')
+				or ID like concat('%',replace(#searchKey#,'_','\_'),'%')
+				or MAIN_TABLE_PKID_NAME like concat('%',replace(#searchKey#,'_','\_'),'%')
+				or REAL_TABLE_FKID_NAME like concat('%',replace(#searchKey#,'_','\_'),'%')
+			</isNotEmpty>
+			<isNotNull property="targetId">
+				and TARGET_ID = #targetId#
+			</isNotNull>
+			<isNotNull property="mainTableId">
+				and MAIN_TABLE_ID = #mainTableId#
+			</isNotNull>
+			<isNotNull property="slaveTableId">
+				and SLAVE_TABLE_ID = #slaveTableId#
+			</isNotNull>
+		</dynamic>
+
+		ORDER BY ID DESC
+
+		<dynamic>
+			<isNotEmpty property="offset" >
+				<isNotEmpty property="length">
+					limit #offset#, #length#
+				</isNotEmpty>
+			</isNotEmpty>
+		</dynamic>
+	</select>
+
+
+	<delete id="deleteWideTableById" parameterClass="long"><![CDATA[
+    	delete from WIDE_TABLE where ID = #identity#
+    ]]></delete>
+
+
+	<select id="findWideTableById" resultMap="wideTableResult" parameterClass="long">
+		select
+		<include refid="allwideTableColumns" />
+		from WIDE_TABLE where ID = #identity#
+	</select>
+
+</sqlMap>  

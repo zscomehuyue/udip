@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+    <!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"  
+       "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="com.alibaba.otter.manager.biz.config.route.dal.dataobject.LoadRouteDO">
+	<typeAlias alias="LOAD_ROUTE"
+		type="com.alibaba.otter.manager.biz.config.route.dal.dataobject.LoadRouteDO" />
+
+	<resultMap id="loadRouteResult" class="LOAD_ROUTE">
+		<result property="id" column="ID" />
+		<result property="pipelineId" column="PIPELINE_ID" />
+		<result property="tableId" column="TABLE_ID" />
+		<result property="loadDataMediaId" column="LOAD_DATA_MEDIA_ID" />
+		<result property="type" column="TYPE" />
+		<result property="description" column="DESCRIPTION" />
+		<result property="created" column="CREATED" />
+		<result property="modified" column="MODIFIED" />
+	</resultMap>
+	
+	<!-- all columns -->
+	<sql id="allloadRouteColumns">ID,PIPELINE_ID,TABLE_ID,LOAD_DATA_MEDIA_ID,TYPE,DESCRIPTION,CREATED,MODIFIED</sql>
+
+	<insert id="insertLoadRoute" parameterClass="LOAD_ROUTE">
+		insert into LOAD_ROUTE
+		(PIPELINE_ID,TABLE_ID,LOAD_DATA_MEDIA_ID,TYPE,DESCRIPTION,CREATED,MODIFIED)
+		VALUES 
+		(#pipelineId#,#tableId#,#loadDataMediaId#,#type#,#description#,now(),now())
+		<selectKey keyProperty="id" resultClass="long">
+			select last_insert_id()
+		</selectKey>
+	</insert>
+
+	<select id="listLoadRoutesByPipelineId" resultMap="loadRouteResult" parameterClass="java.lang.Long">
+		select
+		<include refid="allloadRouteColumns" />
+		from LOAD_ROUTE where PIPELINE_ID=#pipelineId#
+	</select>
+
+	<delete id="deleteByPipelineIdAndTableId" parameterClass="LOAD_ROUTE">
+		delete from LOAD_ROUTE where PIPELINE_ID = #pipelineId# AND  TABLE_ID=#tableId#
+	</delete>
+
+
+	<select id="listLoadRoutesWithCondition" resultMap="loadRouteResult" parameterClass="java.util.Map">
+		select
+		<include refid="allloadRouteColumns" />
+		from LOAD_ROUTE
+		where 1=1
+		<isNotEmpty property="pipelineId">
+			and PIPELINE_ID=#pipelineId#
+		</isNotEmpty>
+		<isNotEmpty property="tableId">
+			and TABLE_ID=#tableId#
+		</isNotEmpty>
+
+	</select>
+
+
+</sqlMap>  

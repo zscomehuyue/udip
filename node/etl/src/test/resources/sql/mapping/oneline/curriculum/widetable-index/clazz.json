@@ -1,0 +1,90 @@
+curl -H 'Content-Type:application/json; charset=utf-8'     -XPOST   "http://192.168.13.188:9200/clazz/udip/_mapping?pretty"  -d   '{
+      "udip" : {
+        "properties" : {
+          "clazz_cityId" : {
+            "type" : "keyword"
+          },
+          "clazz_classCount" : {
+            "type" : "long"
+          },
+          "clazz_gradeId" : {
+            "type" : "keyword"
+          },
+          "clazz_gradeName" : {
+            "type" : "text",
+            "fields" : {
+              "keyword" : {
+                "type" : "keyword",
+                "ignore_above" : 256
+              }
+            }
+          },
+          "clazz_gradeTypeId" : {
+          "type" : "keyword"
+          },
+          "clazz_gradeTypeName" : {
+          "type" : "text",
+          "fields" : {
+          "keyword" : {
+          "type" : "keyword",
+          "ignore_above" : 256
+          }
+          }
+          },
+          "clazz_id" : {
+            "type" : "keyword"
+          },
+          "clazz_isDelete" : {
+            "type" : "long"
+          },
+          "clazz_isHidden" : {
+            "type" : "long"
+          },
+          "clazz_isLiveClass" : {
+            "type" : "long"
+          },
+          "clazz_subjectIds" : {
+          "type" : "long"
+          },
+          "clazz_levelId" : {
+            "type" : "keyword"
+          },
+          "clazz_levelName" : {
+            "type" : "text",
+            "fields" : {
+              "keyword" : {
+                "type" : "keyword",
+                "ignore_above" : 256
+              }
+            }
+          },
+          "clazz_name" : {
+            "type" : "text",
+            "fields" : {
+              "keyword" : {
+                "type" : "keyword",
+                "ignore_above" : 256
+              }
+            }
+          },
+          "clazz_passedCount" : {
+            "type" : "long"
+          },
+          "clazz_subjectLongValue" : {
+            "type" : "long"
+          },
+          "clazz_termId" : {
+            "type" : "keyword"
+          },
+          "clazz_year" : {
+            "type" : "keyword"
+          },
+          "esDate" : {
+            "type" : "keyword"
+          },
+          "esDateTime" : {
+            "type" : "long"
+          }
+        }
+      }
+    }'

@@ -1,0 +1,57 @@
+curl -H 'Content-Type:application/json; charset=utf-8'     -XPOST   "http://10.200.0.109:9200/grade/udip/_mapping?pretty"  -d   '{
+      "udip" : {
+        "properties" : {
+          "esDate" : {
+            "type" : "keyword"
+          },
+          "esDateTime" : {
+            "type" : "long"
+          },
+          "grade_cityId" : {
+            "type" : "keyword"
+          },
+          "grade_createDate" : {
+            "type" : "date"
+          },
+          "grade_createrId" : {
+            "type" : "keyword"
+          },
+          "grade_digits" : {
+            "type" : "long"
+          },
+          "grade_fullclassShowstatus" : {
+            "type" : "long"
+          },
+          "grade_id" : {
+            "type" : "keyword"
+          },
+          "grade_isdeleted" : {
+            "type" : "long"
+          },
+          "grade_modifyDate" : {
+            "type" : "date"
+          },
+          "grade_modifyId" : {
+            "type" : "keyword"
+          },
+          "grade_name" : {
+            "type" : "text",
+            "fields" : {
+              "keyword" : {
+                "type" : "keyword",
+                "ignore_above" : 256
+              }
+            }
+          },
+          "grade_order" : {
+            "type" : "long"
+          },
+          "grade_status" : {
+            "type" : "long"
+          },
+          "grade_typeId" : {
+            "type" : "keyword"
+          }
+        }
+      }
+}'

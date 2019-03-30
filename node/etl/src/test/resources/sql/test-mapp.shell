@@ -1,0 +1,23 @@
+curl -H 'Content-Type:application/json; charset=utf-8'     -XPOST   "http://10.200.0.109:9200/test/udip/_mapping?pretty"  -d '{
+   "udip": {
+   "properties": {
+    "ids": {
+    "type": "array"
+    }
+   }
+}'
+
+curl -H 'Content-Type:application/json; charset=utf-8' -XPUT   "http://10.200.0.109:9200/ok/udip/2"  -d '{
+"tags":  ["elasticsearch", "wow"],
+"lists": [
+{
+"name": "prog_list",
+"description": "programming list"
+},
+{
+"name": "cool_list",
+"description": "cool stuff list"
+}
+]
+}'
+

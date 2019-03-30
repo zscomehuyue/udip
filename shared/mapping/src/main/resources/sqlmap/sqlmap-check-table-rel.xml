@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+    <!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"  
+       "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="com.hwl.otter.clazz.tablerel.dal.dataobject.CheckTableRelDo">
+	<typeAlias alias="checkTableRelDo"
+		type="com.hwl.otter.clazz.tablerel.dal.dataobject.CheckTableRelDo" />
+
+	<resultMap id="checkTableRelDoResult" class="checkTableRelDo">
+		<result property="id" column="ID" />
+		<result property="tableName" column="TABLE_NAME" />
+		<result property="timeFieldName" column="TIME_FIELD_NAME" />
+		<result property="keyName" column="KEY_NAME" />
+		<result property="whereSql" column="WHERE_SQL" />
+		<result property="isUse" column="IS_USE" />
+		<result property="createDate" column="CREATE_DATE" />
+		<result property="updateDate" column="UPDATE_DATE" />
+	</resultMap>
+	
+	<!-- all columns -->
+	<sql id="CheckTableRelDoColumns">ID,TABLE_NAME,TIME_FIELD_NAME,KEY_NAME,WHERE_SQL,IS_USE,CREATE_DATE,UPDATE_DATE</sql>
+
+	<insert id="insertCheckTableRelDo" parameterClass="checkTableRelDo">
+		insert into check_table_rel
+		(TABLE_NAME,TIME_FIELD_NAME,KEY_NAME,WHERE_SQL,IS_USE,CREATE_DATE,UPDATE_DATE)
+		values (#tableName#,#timeFieldName#,#keyName#,#whereSql#,#isUse#,now(),now())
+	</insert>
+
+
+
+	<update id="updateCheckTableRelDoById" parameterClass="checkTableRelDo">
+		update check_table_rel
+		<dynamic prepend="set">
+			UPDATE_DATE = now(),
+			TABLE_NAME=#tableName#,
+			TIME_FIELD_NAME=#timeFieldName#,
+			KEY_NAME=#keyName#,
+			WHERE_SQL=#whereSql#,
+			IS_USE=#isUse#
+		</dynamic>
+		WHERE ID = #id#
+	</update>
+
+
+	<delete id="deleteCheckTableRel" parameterClass="int">
+		delete from check_table_rel where ID = #value#
+	</delete>
+
+
+	<select id="findCheckTableRelByTableName" resultMap="checkTableRelDoResult" parameterClass="java.lang.String" >
+		select
+		<include refid="CheckTableRelDoColumns" />
+		from check_table_rel where TABLE_NAME = #tableName#
+	</select>
+
+
+
+	<select id="getCheckTableRelCount" resultClass="Integer">
+		select count(*) from check_table_rel
+		<dynamic prepend="where">
+			<isNotEmpty property="searchKey">
+				TABLE_NAME like concat('%',replace(#searchKey#,'_','\_'),'%')
+				or TIME_FIELD_NAME like concat('%',replace(#searchKey#,'_','\_'),'%')
+				or KEY_NAME like concat('%',replace(#searchKey#,'_','\_'),'%')
+			</isNotEmpty>
+		</dynamic>
+	</select>
+
+	<select id="listCheckTableRel" resultMap="checkTableRelDoResult">
+		select
+		<include refid="CheckTableRelDoColumns" />
+		from check_table_rel
+		<dynamic prepend="where">
+			<isNotEmpty property="searchKey">
+				TABLE_NAME like concat('%',replace(#searchKey#,'_','\_'),'%')
+				or TIME_FIELD_NAME like concat('%',replace(#searchKey#,'_','\_'),'%')
+				or KEY_NAME like concat('%',replace(#searchKey#,'_','\_'),'%')
+			</isNotEmpty>
+		</dynamic>
+
+		ORDER BY ID DESC
+
+		<dynamic>
+			<isNotEmpty property="offset" >
+				<isNotEmpty property="length">
+					limit #offset#, #length#
+				</isNotEmpty>
+			</isNotEmpty>
+		</dynamic>
+	</select>
+
+
+	<select id="getCheckTableRelDoById" resultMap="checkTableRelDoResult" parameterClass="int">
+		select
+		<include refid="CheckTableRelDoColumns" />
+		from check_table_rel
+		where id=#id#
+	</select>
+
+
+</sqlMap>  
