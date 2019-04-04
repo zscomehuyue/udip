@@ -31,7 +31,7 @@
 		<dependency>
 			<groupId>org.fitnesse</groupId>
 			<artifactId>fitnesse</artifactId>
-			<version>20100211</version>
+			<version>20111025</version>
 		</dependency>
 		<dependency>
 			<groupId>ognl</groupId>
@@ -89,8 +89,8 @@
 		</dependency>
 		<dependency>
 			<groupId>com.oracle</groupId>
-			<artifactId>ojdbc14</artifactId>
-			<version>10.2.0.3.0</version>
+			<artifactId>ojdbc6</artifactId>
+			<version>11.1.0.7.0</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
